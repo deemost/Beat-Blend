@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import SpotifyPlayer from "react-spotify-web-playback";
 
 export default function Player({ accessToken, trackUri, playNextInTheQueue }) {
-  const [play, setPlay] = useState(false);
+  const [play, setPlay] = useState(true);
   const [accum, setAccum] = useState(-3);
   const [prevTrack, setPrevTrack] = useState("");
 
@@ -13,7 +13,7 @@ export default function Player({ accessToken, trackUri, playNextInTheQueue }) {
     <SpotifyPlayer
       token={accessToken}
       callback={(state) => {
-        if (!state.isPlaying) setPlay(false);
+        // if (!state.isPlaying) setPlay(false);
         console.log("-------- player state: " + JSON.stringify(state));
 
         if (prevTrack != state.name) {
