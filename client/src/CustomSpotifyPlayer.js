@@ -18,9 +18,12 @@ export default function Player({ accessToken, trackUri, playNextInTheQueue }) {
 
         if (prevTrack != state.name) {
           setPrevTrack(state.name);
+          setAccum(-2);
         }
 
-        if (state.position == 0 && accum >= 1) {
+        
+
+        else if (state.position == 0 && accum >= 1) {
           playNextInTheQueue();
           setAccum(-1);
         } else if (state.position == 0) {
@@ -30,7 +33,7 @@ export default function Player({ accessToken, trackUri, playNextInTheQueue }) {
         console.log("WWWWWWWcur" + state.position);
         console.log("Thing " + accum);
       }}
-      play={play}
+      play={true}
       autoPlay={true}
       uris={trackUri ? [trackUri] : []}
       // queue={queue}
