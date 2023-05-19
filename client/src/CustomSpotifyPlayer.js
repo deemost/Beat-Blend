@@ -17,11 +17,12 @@ export default function Player({ accessToken, trackUri, playNextInTheQueue }) {
 
       callback={state => {
         if (!state.isPlaying) setPlay(false);
-        console.log('--------- player state: ' + JSON.stringify(state));
+        console.log('-------- player state: ' + JSON.stringify(state));
 
         if(prevTrack != state.name){
           setPrevTrack(state.name);
         }
+
 
         else if(state.position == 0 && accum == 0){
           setAccum(accum + 1);
