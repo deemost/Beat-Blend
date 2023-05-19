@@ -24,7 +24,7 @@ export default function Que({accessToken, playNextInTheQueue}) {
   return (
       <div>
           <h1>QUEUE:</h1>
-          <button onClick={playNextInQueue}>Play Next</button>
+          {/* <button onClick={playNextInQueue}>Play Next</button> */}
           <h1> </h1>
       </div>
   )

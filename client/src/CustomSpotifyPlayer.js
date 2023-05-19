@@ -19,19 +19,16 @@ export default function Player({ accessToken, trackUri, playNextInTheQueue }) {
         if (prevTrack != state.name) {
           setPrevTrack(state.name);
           setAccum(-2);
-        }
-
-        
-
-        else if (state.position == 0 && accum >= 1) {
+        } else if (state.position == 0 && accum >= 1) {
           playNextInTheQueue();
           setAccum(-1);
         } else if (state.position == 0) {
+          console.log("THIS SHOULD BE POS 0");
           setAccum(accum + 1);
         }
 
-        console.log("WWWWWWWcur" + state.position);
-        console.log("Thing " + accum);
+        console.log("Current Pos " + state.position);
+        console.log("Accumulator " + accum);
       }}
       play={true}
       autoPlay={true}
