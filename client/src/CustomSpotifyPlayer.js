@@ -22,7 +22,7 @@ export default function Player({ accessToken, trackUri, playNextInTheQueue }) {
 
         if (state.position == 0 && accum >= 1) {
           playNextInTheQueue();
-          setAccum(-1);
+          setAccum(0);
         } else if (state.position == 0) {
           setAccum(accum + 1);
         }
