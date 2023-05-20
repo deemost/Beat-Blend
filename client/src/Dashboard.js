@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import useAuth from "./useAuth";
-import Player from "./CustomSpotifyPlayer";
+import CustomSpotifyPlayer from "./CustomSpotifyPlayer";
 import Queue from "./Queue";
+import YoutubeSearchBarTest from "./YoutubeSearchBarTest";
 import TrackSearchResult from "./TrackSearchResult";
 import { Container, Form } from "react-bootstrap";
 import SpotifyWebApi from "spotify-web-api-node";
@@ -18,6 +19,43 @@ export default function Dashboard({ code }) {
   const [queueResults, setQueueResults] = useState([]);
   const [playingTrack, setPlayingTrack] = useState();
   const [lyrics, setLyrics] = useState("");
+  const [whichServiceSearch, setWhichServiceSearch] = useState();
+
+  function showSpotify() {
+    setWhichServiceSearch("Spotify");
+
+    {
+      /* <Form.Control
+              type="search"
+              placeholder="Search Songs/Artists"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <div className="flex-grow-1 my-2" style={{ overflowY: "auto" }}>
+              {searchResults.map((track) => (
+                <TrackSearchResult
+                  track={track}
+                  key={track.uri}
+                  chooseTrack={chooseTrack}
+                  addToQueue={addToQueue}
+                />
+              ))}
+              {searchResults.length === 0 && (
+                <div className="text-center" style={{ whiteSpace: "pre" }}>
+                  {lyrics}
+                </div>
+              )}
+            </div> */
+    }
+  }
+
+  function showAppleMusic() {
+    setWhichServiceSearch("Apple Music");
+  }
+
+  function showYoutube() {
+    setWhichServiceSearch("Youtube");
+  }
 
   function chooseTrack(track) {
     console.log("Chose Track");
@@ -27,7 +65,7 @@ export default function Dashboard({ code }) {
   }
 
   function playNextInQueue() {
-      console.log("QUEUE: " + queueResults);
+    console.log("QUEUE: " + queueResults);
     setPlayingTrack(queueResults[0]);
     setQueueResults((queueResults) =>
       queueResults.filter((_, index) => index !== 0)
@@ -114,19 +152,31 @@ export default function Dashboard({ code }) {
         <div class="col-lg-8">
           <div class="row">
             <div class="col-lg">
-              <button type="button" class="btn btn-success btn-lg btn-block">
+              <button
+                type="button"
+                onClick={showSpotify}
+                class="btn btn-success btn-lg btn-block"
+              >
                 Spotify
               </button>
             </div>
 
             <div class="col-lg">
-              <button type="button" class="btn btn-warning btn-lg btn-block">
-                SoundCloud
+              <button
+                type="button"
+                onClick={showAppleMusic}
+                class="btn btn-info btn-lg btn-block"
+              >
+                Apple Music
               </button>
             </div>
 
             <div class="col-lg">
-              <button type="button" class="btn btn-danger btn-lg btn-block">
+              <button
+                type="button"
+                onClick={showYoutube}
+                class="btn btn-danger btn-lg btn-block"
+              >
                 Youtube
               </button>
             </div>
@@ -136,30 +186,51 @@ export default function Dashboard({ code }) {
             className="d-flex flex-column py-2"
             style={{ height: "90vh" }}
           >
-            <Form.Control
-              type="search"
-              placeholder="Search Songs/Artists"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <div className="flex-grow-1 my-2" style={{ overflowY: "auto" }}>
-              {searchResults.map((track) => (
-                <TrackSearchResult
-                  track={track}
-                  key={track.uri}
-                  chooseTrack={chooseTrack}
-                  addToQueue={addToQueue}
-                />
-              ))}
-              {searchResults.length === 0 && (
-                <div className="text-center" style={{ whiteSpace: "pre" }}>
-                  {lyrics}
-                </div>
+            <div>
+              {whichServiceSearch === "Youtube" ? (
+                <h1>THIS WILL BE YOUTUBE PLAYER</h1>
+              ) : whichServiceSearch === "Apple Music" ? (
+                <h1>THIS WILL BE APPLE MUSIC PLAYER</h1>
+              ) : (
+                <Container
+                  className="d-flex flex-column py-2"
+                  style={{ height: "80vh" }}
+                >
+                  {" "}
+                  <Form.Control
+                    type="search"
+                    placeholder="Search Songs/Artists"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                  <div
+                    className="flex-grow-1 my-2"
+                    style={{ overflowY: "auto" }}
+                  >
+                    {searchResults.map((track) => (
+                      <TrackSearchResult
+                        track={track}
+                        key={track.uri}
+                        chooseTrack={chooseTrack}
+                        addToQueue={addToQueue}
+                      />
+                    ))}
+                    {searchResults.length === 0 && (
+                      <div
+                        className="text-center"
+                        style={{ whiteSpace: "pre" }}
+                      >
+                        {lyrics}
+                      </div>
+                    )}
+                  </div>{" "}
+                </Container>
               )}
             </div>
+
             <div>
               {/* THIS IS WHERE THE PLAYER IS */}
-              <Player
+              <CustomSpotifyPlayer
                 accessToken={accessToken}
                 trackUri={playingTrack?.uri}
                 playNextInTheQueue={playNextInQueue}
