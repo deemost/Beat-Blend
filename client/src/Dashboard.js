@@ -20,15 +20,18 @@ export default function Dashboard({ code }) {
   const [lyrics, setLyrics] = useState("");
 
   function chooseTrack(track) {
-    console.log("AHHHHHHH" + JSON.stringify(queueResults));
+    console.log("Chose Track");
     setPlayingTrack(track);
     setSearch("");
     setLyrics("");
   }
 
   function playNextInQueue() {
+      console.log("QUEUE: " + queueResults);
     setPlayingTrack(queueResults[0]);
-    setQueueResults((queueResults) => queueResults.filter((_, index) => index !== 0));
+    setQueueResults((queueResults) =>
+      queueResults.filter((_, index) => index !== 0)
+    );
     setSearch("");
     setLyrics("");
   }
@@ -109,9 +112,29 @@ export default function Dashboard({ code }) {
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-8">
+          <div class="row">
+            <div class="col-lg">
+              <button type="button" class="btn btn-success btn-lg btn-block">
+                Spotify
+              </button>
+            </div>
+
+            <div class="col-lg">
+              <button type="button" class="btn btn-warning btn-lg btn-block">
+                SoundCloud
+              </button>
+            </div>
+
+            <div class="col-lg">
+              <button type="button" class="btn btn-danger btn-lg btn-block">
+                Youtube
+              </button>
+            </div>
+          </div>
+
           <Container
             className="d-flex flex-column py-2"
-            style={{ height: "100vh" }}
+            style={{ height: "90vh" }}
           >
             <Form.Control
               type="search"
@@ -136,10 +159,15 @@ export default function Dashboard({ code }) {
             </div>
             <div>
               {/* THIS IS WHERE THE PLAYER IS */}
-              <Player accessToken={accessToken} trackUri={playingTrack?.uri} playNextInTheQueue={playNextInQueue} />
+              <Player
+                accessToken={accessToken}
+                trackUri={playingTrack?.uri}
+                playNextInTheQueue={playNextInQueue}
+              />
             </div>
           </Container>
         </div>
+
         <div class="col-lg-2">
           <Container>
             <Queue
