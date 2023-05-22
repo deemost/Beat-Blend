@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import useAuth from "./useAuth";
-import CustomSpotifyPlayer from "./CustomSpotifyPlayer";
+import CustomSpotifyPlayer from "./Spotify/CustomSpotifyPlayer";
 import Queue from "./Queue";
-import YoutubeSearchBarTest from "./YoutubeSearchBarTest";
-import TrackSearchResult from "./TrackSearchResult";
+import Login from "./Login";
+import TrackSearchResult from "./Spotify/TrackSearchResult";
 import { Container, Form } from "react-bootstrap";
 import SpotifyWebApi from "spotify-web-api-node";
 import axios from "axios";
@@ -12,8 +12,9 @@ const spotifyApi = new SpotifyWebApi({
   clientId: "8ecf06d5fca640ca80c33ef1d00287e2",
 });
 
-export default function Dashboard({ code }) {
-  const accessToken = useAuth(code);
+export default function Dashboard({ spotifyCode, appleMusicCode, youtubeCode }) {
+  const SpotifyAccessToken = useAuth(spotifyCode);
+  // let SpotifyAccessToken = "";
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [queueResults, setQueueResults] = useState([]);
@@ -21,36 +22,50 @@ export default function Dashboard({ code }) {
   const [lyrics, setLyrics] = useState("");
   const [whichServiceSearch, setWhichServiceSearch] = useState();
 
+  const [loggedInWithSpotify, setLoggedInWithSpotify] = useState(false);
+  const [showLoginForSpotify, setShowLoginForSpotify] = useState(false);
+
+  const [loggedInWithAppleMusic, setLoggedInWithAppleMusic] = useState(false);
+  const [showLoginForAppleMusic, setShowLoginForAppleMusic] = useState(false);
+
+  const [loggedInWithYoutube, setLoggedInWithYoutube] = useState(false);
+  const [showLoginForYoutube, setShowLoginForYoutube] = useState(false);
+
+  // console.log(spotifyCode);
+  // console.log(showLoginForSpotify);
+
+  // console.log(whichServiceSearch);
+
+
+  console.log(SpotifyAccessToken);
+
+
   function showSpotify() {
     setWhichServiceSearch("Spotify");
 
-    {
-      /* <Form.Control
-              type="search"
-              placeholder="Search Songs/Artists"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <div className="flex-grow-1 my-2" style={{ overflowY: "auto" }}>
-              {searchResults.map((track) => (
-                <TrackSearchResult
-                  track={track}
-                  key={track.uri}
-                  chooseTrack={chooseTrack}
-                  addToQueue={addToQueue}
-                />
-              ))}
-              {searchResults.length === 0 && (
-                <div className="text-center" style={{ whiteSpace: "pre" }}>
-                  {lyrics}
-                </div>
-              )}
-            </div> */
+    if (!spotifyCode) {
+      setLoggedInWithSpotify(false);
+      setShowLoginForSpotify(true);
+    } else {
+      setLoggedInWithSpotify(true);
+      setShowLoginForSpotify(false);
     }
+
+    // console.log(showLoginForSpotify);
   }
 
   function showAppleMusic() {
     setWhichServiceSearch("Apple Music");
+
+    if (!appleMusicCode) {
+      setLoggedInWithAppleMusic(false);
+      setShowLoginForAppleMusic(true);
+    } else {
+      setLoggedInWithAppleMusic(true);
+      setShowLoginForAppleMusic(false);
+    }
+
+
   }
 
   function showYoutube() {
@@ -76,31 +91,13 @@ export default function Dashboard({ code }) {
 
   function addToQueue(track) {
     setQueueResults((queueResults) => [...queueResults, track]);
-
-    // console.log("------------------- " + JSON.stringify(accessToken));
-
-    // try {
-    //     const response =  axios.post('https://api.spotify.com/v1/me/player/queue?uri=' + track.uri, {
-    //         headers: {
-    //             Authorization: `Bearer ${accessToken}`,
-    //         },
-    //       });
-
-    //     if (!response.ok) {
-    //       throw new Error(`Error! status: ${response.status}`);
-    //     }
-
-    //   }
-    //   catch (err) {
-    //       console.log(err);
-    //   }
   }
 
   useEffect(() => {
     if (!playingTrack) return;
 
     axios
-      .get("http://localhost:3001/lyrics", {
+      .get("http://localhost:3001/spotify/lyrics", {
         params: {
           track: playingTrack.title,
           artist: playingTrack.artist,
@@ -112,13 +109,13 @@ export default function Dashboard({ code }) {
   }, [playingTrack]);
 
   useEffect(() => {
-    if (!accessToken) return;
-    spotifyApi.setAccessToken(accessToken);
-  }, [accessToken]);
+    if (!SpotifyAccessToken) return;
+    spotifyApi.setAccessToken(SpotifyAccessToken);
+  }, [SpotifyAccessToken]);
 
   useEffect(() => {
     if (!search) return setSearchResults([]);
-    if (!accessToken) return;
+    if (!SpotifyAccessToken) return;
 
     let cancel = false;
     spotifyApi.searchTracks(search).then((res) => {
@@ -144,120 +141,264 @@ export default function Dashboard({ code }) {
     });
 
     return () => (cancel = true);
-  }, [search, accessToken]);
+  }, [search, SpotifyAccessToken]);
 
   return (
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-8">
-          <div class="row">
-            <div class="col-lg">
-              <button
-                type="button"
-                onClick={showSpotify}
-                class="btn btn-success btn-lg btn-block"
-              >
-                Spotify
-              </button>
-            </div>
+    <div>
+      {whichServiceSearch === "Spotify" ? (
+        <div>
+          {loggedInWithSpotify ? (
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-8">
+                  <div class="row">
+                    <div class="col-lg">
+                      <button
+                        type="button"
+                        onClick={showSpotify}
+                        class="btn btn-success btn-lg btn-block"
+                      >
+                        Spotify
+                      </button>
+                    </div>
 
-            <div class="col-lg">
-              <button
-                type="button"
-                onClick={showAppleMusic}
-                class="btn btn-info btn-lg btn-block"
-              >
-                Apple Music
-              </button>
-            </div>
+                    <div class="col-lg">
+                      <button
+                        type="button"
+                        onClick={showAppleMusic}
+                        class="btn btn-info btn-lg btn-block"
+                      >
+                        Apple Music
+                      </button>
+                    </div>
 
-            <div class="col-lg">
-              <button
-                type="button"
-                onClick={showYoutube}
-                class="btn btn-danger btn-lg btn-block"
-              >
-                Youtube
-              </button>
-            </div>
-          </div>
+                    <div class="col-lg">
+                      <button
+                        type="button"
+                        onClick={showYoutube}
+                        class="btn btn-danger btn-lg btn-block"
+                      >
+                        Youtube
+                      </button>
+                    </div>
+                  </div>
 
-          <Container
-            className="d-flex flex-column py-2"
-            style={{ height: "90vh" }}
-          >
-            <div>
-              {whichServiceSearch === "Youtube" ? (
-                <h1>THIS WILL BE YOUTUBE PLAYER</h1>
-              ) : whichServiceSearch === "Apple Music" ? (
-                <h1>THIS WILL BE APPLE MUSIC PLAYER</h1>
-              ) : (
+                  <Container
+                    className="d-flex flex-column py-2"
+                    style={{ height: "90vh" }}
+                  >
+                    <div>
+                      {whichServiceSearch === "Youtube" ? (
+                        <h1>THIS WILL BE YOUTUBE PLAYER</h1>
+                      ) : whichServiceSearch === "Apple Music" ? (
+                        <h1>THIS WILL BE APPLE MUSIC PLAYER</h1>
+                      ) : (
+                        <Container
+                          className="d-flex flex-column py-2"
+                          style={{ height: "80vh" }}
+                        >
+                          {" "}
+                          <Form.Control
+                            type="search"
+                            placeholder="Search Songs/Artists"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                          />
+                          <div
+                            className="flex-grow-1 my-2"
+                            style={{ overflowY: "auto" }}
+                          >
+                            {searchResults.map((track) => (
+                              <TrackSearchResult
+                                track={track}
+                                key={track.uri}
+                                chooseTrack={chooseTrack}
+                                addToQueue={addToQueue}
+                              />
+                            ))}
+                            {searchResults.length === 0 && (
+                              <div
+                                className="text-center"
+                                style={{ whiteSpace: "pre" }}
+                              >
+                                {lyrics}
+                              </div>
+                            )}
+                          </div>{" "}
+                        </Container>
+                      )}
+                    </div>
+
+                    <div>
+                      {/* THIS IS WHERE THE PLAYER IS */}
+                      <CustomSpotifyPlayer
+                        accessToken={SpotifyAccessToken}
+                        trackUri={playingTrack?.uri}
+                        playNextInTheQueue={playNextInQueue}
+                      />
+                    </div>
+                  </Container>
+                </div>
+
+                <div class="col-lg-2">
+                  <Container>
+                    <Queue
+                      SpotifyAccessToken={SpotifyAccessToken}
+                      playNextInTheQueue={playNextInQueue}
+                    ></Queue>
+
+                    {queueResults.map((track) => (
+                      <div>
+                        <img
+                          src={track.albumUrl}
+                          style={{ height: "32px", width: "32px" }}
+                        />
+                        {track.title}
+                      </div>
+                    ))}
+                  </Container>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <Login></Login>
+          )}
+        </div>
+      ) 
+      
+      
+      
+      
+      : whichServiceSearch === "Apple Music" ? (<div>
+        {loggedInWithAppleMusic ? (
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-8">
+                <div class="row">
+                  <div class="col-lg">
+                    <button
+                      type="button"
+                      onClick={showSpotify}
+                      class="btn btn-success btn-lg btn-block"
+                    >
+                      Spotify
+                    </button>
+                  </div>
+
+                  <div class="col-lg">
+                    <button
+                      type="button"
+                      onClick={showAppleMusic}
+                      class="btn btn-info btn-lg btn-block"
+                    >
+                      Apple Music
+                    </button>
+                  </div>
+
+                  <div class="col-lg">
+                    <button
+                      type="button"
+                      onClick={showYoutube}
+                      class="btn btn-danger btn-lg btn-block"
+                    >
+                      Youtube
+                    </button>
+                  </div>
+                </div>
+
                 <Container
                   className="d-flex flex-column py-2"
-                  style={{ height: "80vh" }}
+                  style={{ height: "90vh" }}
                 >
-                  {" "}
-                  <Form.Control
-                    type="search"
-                    placeholder="Search Songs/Artists"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                  <div
-                    className="flex-grow-1 my-2"
-                    style={{ overflowY: "auto" }}
-                  >
-                    {searchResults.map((track) => (
-                      <TrackSearchResult
-                        track={track}
-                        key={track.uri}
-                        chooseTrack={chooseTrack}
-                        addToQueue={addToQueue}
-                      />
-                    ))}
-                    {searchResults.length === 0 && (
-                      <div
-                        className="text-center"
-                        style={{ whiteSpace: "pre" }}
+                  <div>
+                    {whichServiceSearch === "Youtube" ? (
+                      <h1>THIS WILL BE YOUTUBE PLAYER</h1>
+                    ) : whichServiceSearch === "Apple Music" ? (
+                      <h1>THIS WILL BE APPLE MUSIC PLAYER</h1>
+                    ) : (
+                      <Container
+                        className="d-flex flex-column py-2"
+                        style={{ height: "80vh" }}
                       >
-                        {lyrics}
-                      </div>
+                        {" "}
+                        <Form.Control
+                          type="search"
+                          placeholder="Search Songs/Artists"
+                          value={search}
+                          onChange={(e) => setSearch(e.target.value)}
+                        />
+                        <div
+                          className="flex-grow-1 my-2"
+                          style={{ overflowY: "auto" }}
+                        >
+                          {searchResults.map((track) => (
+                            <TrackSearchResult
+                              track={track}
+                              key={track.uri}
+                              chooseTrack={chooseTrack}
+                              addToQueue={addToQueue}
+                            />
+                          ))}
+                          {searchResults.length === 0 && (
+                            <div
+                              className="text-center"
+                              style={{ whiteSpace: "pre" }}
+                            >
+                              {lyrics}
+                            </div>
+                          )}
+                        </div>{" "}
+                      </Container>
                     )}
-                  </div>{" "}
+                  </div>
+
+                  <div>
+                    {/* THIS IS WHERE THE PLAYER IS */}
+                    <CustomSpotifyPlayer
+                      SpotifyAccessToken={SpotifyAccessToken}
+                      trackUri={playingTrack?.uri}
+                      playNextInTheQueue={playNextInQueue}
+                    />
+                  </div>
                 </Container>
-              )}
-            </div>
-
-            <div>
-              {/* THIS IS WHERE THE PLAYER IS */}
-              <CustomSpotifyPlayer
-                accessToken={accessToken}
-                trackUri={playingTrack?.uri}
-                playNextInTheQueue={playNextInQueue}
-              />
-            </div>
-          </Container>
-        </div>
-
-        <div class="col-lg-2">
-          <Container>
-            <Queue
-              accessToken={accessToken}
-              playNextInTheQueue={playNextInQueue}
-            ></Queue>
-
-            {queueResults.map((track) => (
-              <div>
-                <img
-                  src={track.albumUrl}
-                  style={{ height: "32px", width: "32px" }}
-                />
-                {track.title}
               </div>
-            ))}
-          </Container>
-        </div>
-      </div>
+
+              <div class="col-lg-2">
+                <Container>
+                  <Queue
+                    SpotifyAccessToken={SpotifyAccessToken}
+                    playNextInTheQueue={playNextInQueue}
+                  ></Queue>
+
+                  {queueResults.map((track) => (
+                    <div>
+                      <img
+                        src={track.albumUrl}
+                        style={{ height: "32px", width: "32px" }}
+                      />
+                      {track.title}
+                    </div>
+                  ))}
+                </Container>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <Login></Login>
+        )}
+      </div>)
+      
+      : showLoginForSpotify ? (
+        <Login></Login>
+      ) : (
+        <button
+          type="button"
+          onClick={showSpotify}
+          class="btn btn-success btn-lg btn-block"
+        >
+          Spotify
+        </button>
+      )}
     </div>
   );
 }
