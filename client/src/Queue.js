@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { spotifyApi } from 'react-spotify-web-playback';
 // import getQueue from "react-spotify-web-playback"
 
-export default function Que({accessToken, playNextInTheQueue}) {
+export default function Que() {
     // console.log(accessToken)
     const [queueResults, setQueueResults] = useState([])
 
@@ -15,11 +15,6 @@ export default function Que({accessToken, playNextInTheQueue}) {
     //   }, [queueResults])
 
 
-      function playNextInQueue(){
-
-        playNextInTheQueue();
-
-      }
 
   return (
       <div>
