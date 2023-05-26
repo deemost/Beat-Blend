@@ -14,12 +14,10 @@ const spotifyApi = new SpotifyWebApi({
   clientId: "8ecf06d5fca640ca80c33ef1d00287e2",
 });
 
-export default function Dashboard({
-  spotifyCode,
-  appleMusicCode,
-  youtubeCode,
-}) {
-  const SpotifyAccessToken = useSpotifyAuth(spotifyCode);
+export default function Dashboard({ code, whichService }) {
+  const SpotifyAccessToken = useSpotifyAuth(code);
+  // const SpotifyAccessToken = code;
+  const testYoutubeCode = code;
   // let SpotifyAccessToken = "";
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -40,19 +38,21 @@ export default function Dashboard({
   // console.log(spotifyCode);
   // console.log(showLoginForSpotify);
 
-  console.log(whichServiceSearch);
+  // console.log(whichServiceSearch);
 
-  console.log(SpotifyAccessToken);
+  // console.log(SpotifyAccessToken);
+  console.log("code: " + testYoutubeCode);
+  console.log("service: " + whichService);
 
   function showSpotify() {
     setWhichServiceSearch("Spotify");
 
-    if (!spotifyCode) {
-      setLoggedInWithSpotify(false);
-      setShowLoginForSpotify(true);
-    } else {
+    if (code && whichService === "Spotify") {
       setLoggedInWithSpotify(true);
       setShowLoginForSpotify(false);
+    } else {
+      setLoggedInWithSpotify(false);
+      setShowLoginForSpotify(true);
     }
 
     // console.log(showLoginForSpotify);
@@ -61,24 +61,24 @@ export default function Dashboard({
   function showAppleMusic() {
     setWhichServiceSearch("Apple Music");
 
-    if (!appleMusicCode) {
-      setLoggedInWithAppleMusic(false);
-      setShowLoginForAppleMusic(true);
-    } else {
+    if (code && whichService === "Apple Music") {
       setLoggedInWithAppleMusic(true);
       setShowLoginForAppleMusic(false);
+    } else {
+      setLoggedInWithAppleMusic(false);
+      setShowLoginForAppleMusic(true);
     }
   }
 
   function showYoutube() {
     setWhichServiceSearch("Youtube");
 
-    if (!youtubeCode) {
-      setLoggedInWithYoutube(false);
-      setShowLoginForYoutube(true);
-    } else {
+    if (code && whichService === "Youtube") {
       setLoggedInWithYoutube(true);
       setShowLoginForYoutube(false);
+    } else {
+      setLoggedInWithYoutube(false);
+      setShowLoginForYoutube(true);
     }
   }
 
