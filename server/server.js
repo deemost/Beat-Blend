@@ -4,6 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const lyricsFinder = require("lyrics-finder");
 const SpotifyWebApi = require("spotify-web-api-node");
+let queueResults = [];
 
 const app = express();
 app.use(cors());
@@ -62,6 +63,17 @@ app.get("/spotify/lyrics", async (req, res) => {
     "No Lyrics Found";
   res.json({ lyrics });
 });
+
+
+app.post("/spotify/queue", async (req, res) => {
+  queueResults.push(req.body.track);
+  res.json({queueResults}) 
+});
+
+app.get("/spotify/queue", async (req, res) => {
+  res.json({queueResults}) 
+});
+
 
 
 

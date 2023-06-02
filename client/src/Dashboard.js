@@ -15,25 +15,24 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 export default function Dashboard({ code, whichService }) {
-  const SpotifyAccessToken = useSpotifyAuth(code);
-  // const SpotifyAccessToken = code;
-  const testYoutubeCode = code;
-  // let SpotifyAccessToken = "";
+
+
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [queueResults, setQueueResults] = useState([]);
   const [playingTrack, setPlayingTrack] = useState();
   const [lyrics, setLyrics] = useState("");
   const [whichServiceSearch, setWhichServiceSearch] = useState();
-
+  
   const [loggedInWithSpotify, setLoggedInWithSpotify] = useState(false);
-  const [showLoginForSpotify, setShowLoginForSpotify] = useState(false);
-
   const [loggedInWithAppleMusic, setLoggedInWithAppleMusic] = useState(false);
-  const [showLoginForAppleMusic, setShowLoginForAppleMusic] = useState(false);
-
   const [loggedInWithYoutube, setLoggedInWithYoutube] = useState(false);
-  const [showLoginForYoutube, setShowLoginForYoutube] = useState(false);
+
+  const [spotifyCode, setSpotifyCode] = useState("");
+  const [youtubeCode, setYoutubeCode] = useState("");
+
+  const SpotifyAccessToken = useSpotifyAuth(spotifyCode);
+
 
   // console.log(spotifyCode);
   // console.log(showLoginForSpotify);
@@ -41,44 +40,76 @@ export default function Dashboard({ code, whichService }) {
   // console.log(whichServiceSearch);
 
   // console.log(SpotifyAccessToken);
-  console.log("code: " + testYoutubeCode);
+  console.log("code: " + code);
   console.log("service: " + whichService);
+  console.log("cccspotify: " + spotifyCode);
+  console.log("cccyoutube: " + youtubeCode);
+  console.log("queueRes: " + queueResults);
+
+
+  useEffect(() => {
+
+    axios
+      .get("http://localhost:3001/spotify/queue")
+      .then((res) => {
+        setQueueResults(res.data.queueResults);
+      });
+  });
+
+
+
+  useEffect(() => {
+    if(whichService === "Spotify"){
+      setSpotifyCode(code);
+    }
+    else{
+      setYoutubeCode(code);
+    }
+  });
+
+
 
   function showSpotify() {
+
     setWhichServiceSearch("Spotify");
 
-    if (code && whichService === "Spotify") {
+    if (spotifyCode && whichService === "Spotify") {
       setLoggedInWithSpotify(true);
-      setShowLoginForSpotify(false);
+      
     } else {
       setLoggedInWithSpotify(false);
-      setShowLoginForSpotify(true);
+      
     }
 
     // console.log(showLoginForSpotify);
   }
 
   function showAppleMusic() {
+
+
+
+
     setWhichServiceSearch("Apple Music");
 
     if (code && whichService === "Apple Music") {
       setLoggedInWithAppleMusic(true);
-      setShowLoginForAppleMusic(false);
+      
     } else {
       setLoggedInWithAppleMusic(false);
-      setShowLoginForAppleMusic(true);
+      
     }
   }
 
   function showYoutube() {
+
+   
+
     setWhichServiceSearch("Youtube");
 
-    if (code && whichService === "Youtube") {
+    if (youtubeCode && whichService === "Youtube") {
       setLoggedInWithYoutube(true);
-      setShowLoginForYoutube(false);
     } else {
       setLoggedInWithYoutube(false);
-      setShowLoginForYoutube(true);
     }
   }
 
@@ -100,7 +131,23 @@ export default function Dashboard({ code, whichService }) {
   }
 
   function addToQueue(track) {
-    setQueueResults((queueResults) => [...queueResults, track]);
+
+
+    axios
+      .post("http://localhost:3001/spotify/queue", {
+        track   
+      })
+      .then((res) => {
+        setQueueResults(res.data.queueResults);
+      });
+
+
+    // setQueueResults((queueResults) => [...queueResults, track]);
+
+
+
+
+
   }
 
   useEffect(() => {
@@ -117,6 +164,28 @@ export default function Dashboard({ code, whichService }) {
         setLyrics(res.data.lyrics);
       });
   }, [playingTrack]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   useEffect(() => {
     if (!SpotifyAccessToken) return;

@@ -22,12 +22,6 @@ export default function useSpotifyAuth(code) {
         if(code){
           window.location = "/";
         }
-
-    
-
-        
-
-
       })
   }, [code])
 
