@@ -74,6 +74,16 @@ app.get("/spotify/queue", async (req, res) => {
   res.json({queueResults}) 
 });
 
+app.delete("/spotify/queue", async (req, res) => {
+  queueResults.shift();
+  res.json({queueResults}) 
+});
+
+app.delete("/spotify/queue/all", async (req, res) => {
+  queueResults = [];
+  res.json({queueResults}) 
+});
+
 
 
 

@@ -123,15 +123,18 @@ export default function Dashboard({ code, whichService }) {
   function playNextInQueue() {
     console.log("QUEUE: " + queueResults);
     setPlayingTrack(queueResults[0]);
-    setQueueResults((queueResults) =>
-      queueResults.filter((_, index) => index !== 0)
-    );
+
+    axios
+      .delete("http://localhost:3001/spotify/queue")
+      .then((res) => {
+        setQueueResults(res.data.queueResults);
+      });
+    
     setSearch("");
     setLyrics("");
   }
 
   function addToQueue(track) {
-
 
     axios
       .post("http://localhost:3001/spotify/queue", {
@@ -140,14 +143,14 @@ export default function Dashboard({ code, whichService }) {
       .then((res) => {
         setQueueResults(res.data.queueResults);
       });
+  }
 
-
-    // setQueueResults((queueResults) => [...queueResults, track]);
-
-
-
-
-
+  function clearQueue(){
+    axios
+      .delete("http://localhost:3001/spotify/queue/all")
+      .then((res) => {
+        setQueueResults(res.data.queueResults);
+      });
   }
 
   useEffect(() => {
@@ -317,7 +320,7 @@ export default function Dashboard({ code, whichService }) {
                   <Container>
                     <Queue></Queue>
 
-                    {/* <CustomYoutubePlayer videoId={"bhkg2godRDc"}></CustomYoutubePlayer> */}
+                    <button onClick={clearQueue}>Clear Queue</button>
 
                     {queueResults.map((track) => (
                       <div>
