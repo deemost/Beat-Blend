@@ -45,7 +45,13 @@ export default function useSpotifyAuth(code) {
     }, (expiresIn - 60) * 1000)
 
     return () => clearInterval(interval)
-  }, [refreshToken, expiresIn])
+  }, [refreshToken, expiresIn]);
+
+  
+  axios
+  .post("http://localhost:3001/spotify/login/access", {
+    accessToken
+  });
 
   return accessToken
 }

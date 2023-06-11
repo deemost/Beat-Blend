@@ -4,6 +4,7 @@ import CustomSpotifyPlayer from "./Spotify/CustomSpotifyPlayer";
 import Queue from "./Queue";
 import SpotifyLogin from "./Spotify/SpotifyLogin";
 import SpotifyTrackSearchResult from "./Spotify/SpotifyTrackSearchResult";
+import SpotifyQueueTrack from "./Spotify/SpotifyQueueTrack";
 import { Container, Form } from "react-bootstrap";
 import SpotifyWebApi from "spotify-web-api-node";
 import CustomYoutubePlayer from "./Youtube/CustomYoutubePlayer";
@@ -34,17 +35,11 @@ export default function Dashboard({ code, whichService }) {
   const SpotifyAccessToken = useSpotifyAuth(spotifyCode);
 
 
-  // console.log(spotifyCode);
-  // console.log(showLoginForSpotify);
-
-  // console.log(whichServiceSearch);
-
-  // console.log(SpotifyAccessToken);
   console.log("code: " + code);
-  console.log("service: " + whichService);
-  console.log("cccspotify: " + spotifyCode);
-  console.log("cccyoutube: " + youtubeCode);
-  console.log("queueRes: " + queueResults);
+  // console.log("service: " + whichService);
+  // console.log("cccspotify: " + spotifyCode);
+  // console.log("cccyoutube: " + youtubeCode);
+  // console.log("queueRes: " + queueResults);
 
 
   useEffect(() => {
@@ -54,7 +49,8 @@ export default function Dashboard({ code, whichService }) {
       .then((res) => {
         setQueueResults(res.data.queueResults);
       });
-  });
+      
+  }, [queueResults]);
 
 
 
@@ -77,11 +73,22 @@ export default function Dashboard({ code, whichService }) {
       setLoggedInWithSpotify(true);
       
     } else {
-      setLoggedInWithSpotify(false);
-      
-    }
 
-    // console.log(showLoginForSpotify);
+
+      axios
+      .get("http://localhost:3001/spotify/login/access")
+      .then((res) => {
+         SpotifyAccessToken =  res.data.SpotifyAccessToken;
+      });
+
+      if(!SpotifyAccessToken){
+        setLoggedInWithSpotify(false);
+      }
+
+      else{
+        setLoggedInWithSpotify(true);
+      }
+    }
   }
 
   function showAppleMusic() {
@@ -125,7 +132,7 @@ export default function Dashboard({ code, whichService }) {
     setPlayingTrack(queueResults[0]);
 
     axios
-      .delete("http://localhost:3001/spotify/queue")
+      .delete("http://localhost:3001/spotify/queue/specific")
       .then((res) => {
         setQueueResults(res.data.queueResults);
       });
@@ -135,7 +142,6 @@ export default function Dashboard({ code, whichService }) {
   }
 
   function addToQueue(track) {
-
     axios
       .post("http://localhost:3001/spotify/queue", {
         track   
@@ -145,6 +151,21 @@ export default function Dashboard({ code, whichService }) {
       });
   }
 
+
+  function deleteFromQueue(trackIndexInQueue) {
+
+    axios
+      .delete("http://localhost:3001/spotify/queue/specific", {
+        params: {
+          trackIndexInQueue: trackIndexInQueue,
+        },
+      })
+      .then((res) => {
+        setQueueResults(res.data.queueResults);
+      });
+
+  }
+
   function clearQueue(){
     axios
       .delete("http://localhost:3001/spotify/queue/all")
@@ -152,6 +173,11 @@ export default function Dashboard({ code, whichService }) {
         setQueueResults(res.data.queueResults);
       });
   }
+
+
+
+
+
 
   useEffect(() => {
     if (!playingTrack) return;
@@ -173,28 +199,13 @@ export default function Dashboard({ code, whichService }) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   useEffect(() => {
     if (!SpotifyAccessToken) return;
     spotifyApi.setAccessToken(SpotifyAccessToken);
   }, [SpotifyAccessToken]);
 
+
+  
   useEffect(() => {
     if (!search) return setSearchResults([]);
     if (!SpotifyAccessToken) return;
@@ -323,13 +334,7 @@ export default function Dashboard({ code, whichService }) {
                     <button onClick={clearQueue}>Clear Queue</button>
 
                     {queueResults.map((track) => (
-                      <div>
-                        <img
-                          src={track.albumUrl}
-                          style={{ height: "32px", width: "32px" }}
-                        />
-                        {track.title}
-                      </div>
+                      <SpotifyQueueTrack track = {track} deleteFromQueue={deleteFromQueue} trackIndexInQueue={queueResults.indexOf(track)}></SpotifyQueueTrack>
                     ))}
                   </Container>
                 </div>

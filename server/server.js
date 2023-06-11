@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const lyricsFinder = require("lyrics-finder");
 const SpotifyWebApi = require("spotify-web-api-node");
 let queueResults = [];
+let spotifyAccessToken = "";
 
 const app = express();
 app.use(cors());
@@ -65,24 +66,46 @@ app.get("/spotify/lyrics", async (req, res) => {
 });
 
 
+
+
+
+app.post("/spotify/login/access", async (req, res) => {
+  // console.log(req.body.track);
+  spotifyAccessToken = req.body.accessToken
+  res.json({spotifyAccessToken}) 
+});
+
+app.get("/spotify/login/access", async (req, res) => {
+  // console.log(req.body.track);
+  res.json({spotifyAccessToken}) 
+});
+
+
+
+
+
+
+
 app.post("/spotify/queue", async (req, res) => {
+  // console.log(req.body.track);
   queueResults.push(req.body.track);
   res.json({queueResults}) 
 });
 
 app.get("/spotify/queue", async (req, res) => {
-  res.json({queueResults}) 
+  res.json({queueResults});
 });
 
-app.delete("/spotify/queue", async (req, res) => {
-  queueResults.shift();
-  res.json({queueResults}) 
+app.delete("/spotify/queue/specific", async (req, res) => {
+  console.log("thing: " +  JSON.stringify(  req.query.trackIndexInQueue));
+  queueResults.splice(req.query.trackIndexInQueue, 1);
+  res.json({queueResults})
 });
 
 app.delete("/spotify/queue/all", async (req, res) => {
   queueResults = [];
   res.json({queueResults}) 
-});
+});  
 
 
 
@@ -170,5 +193,4 @@ app.get("http://localhost:3000", async (req, res) => {
 
 
 app.listen(3001);
-
 
