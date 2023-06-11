@@ -50,7 +50,7 @@ export default function Dashboard({ code, whichService }) {
         setQueueResults(res.data.queueResults);
       });
       
-  }, [queueResults]);
+  }, [loggedInWithSpotify]);
 
 
 
