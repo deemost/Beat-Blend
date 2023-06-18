@@ -1,14 +1,12 @@
 import React from "react";
 
-export default function SpotifyTrackSearchResult({ track, chooseTrack, addToQueue }) {
+export default function SpotifyTrackSearchResult({ track }) {
   function handlePlayForSong() {
-    //   console.log( "JJJJJJJJ" + JSON.stringify(track));
-    chooseTrack(track);
+
   }
 
   function handleQueue() {
-    // console.log( "JJJJJJJJ" + JSON.stringify(track));
-  addToQueue(track);
+
 }
 
   return (

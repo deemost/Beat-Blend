@@ -35,11 +35,12 @@ export default function Dashboard({ code, whichService }) {
   const SpotifyAccessToken = useSpotifyAuth(spotifyCode);
 
 
-  console.log("code: " + code);
+  // console.log("code: " + code);
   // console.log("service: " + whichService);
   // console.log("cccspotify: " + spotifyCode);
   // console.log("cccyoutube: " + youtubeCode);
   // console.log("queueRes: " + queueResults);
+  console.log("access token: " + SpotifyAccessToken);
 
 
   useEffect(() => {
