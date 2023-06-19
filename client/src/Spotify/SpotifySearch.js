@@ -5,7 +5,7 @@ import {Form} from "react-bootstrap";
 import SpotifyTrackSearchResult from "./SpotifyTrackSearchResult";
 // import getQueue from "react-spotify-web-playback"
 
-export default function SpotifySearch({spotifyAccessToken}) {
+export default function SpotifySearch({spotifyAccessToken, chooseTrack, addToQueue}) {
 
     const [search, setSearch] = useState("");
     const [searchResults, setSearchResults] = useState([]);
@@ -58,15 +58,20 @@ export default function SpotifySearch({spotifyAccessToken}) {
             }
             />
 
-
+            <div
+                className="flex-grow-1 my-2"
+                style={{overflowY: "auto"}}
+            >
 
             {searchResults.map((track) => (
                 <SpotifyTrackSearchResult
                     track={track}
+                    chooseTrack={chooseTrack}
+                    addToQueue={addToQueue}
                 />
             ))}
 
-
+            </div>
         </div>
     )
 }
