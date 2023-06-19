@@ -60,6 +60,20 @@ export default function Dashboard2({code}) {
         // setLyrics("");
     }
 
+    function deleteFromQueue(trackIndexInQueue) {
+
+        axios
+            .delete("http://localhost:3001/spotify/queue/specific", {
+                params: {
+                    trackIndexInQueue: trackIndexInQueue,
+                },
+            })
+            .then((res) => {
+                setQueueResults(res.data.queueResults);
+            });
+
+    }
+
 
     return (
         <div>
@@ -98,7 +112,7 @@ export default function Dashboard2({code}) {
 
 
                 <div className="col">
-                    <Queue newQueueResults={queueResults} clearQ={clearQueue}></Queue>
+                    <Queue newQueueResults={queueResults} clearQ={clearQueue} deleteFromQueue={deleteFromQueue}></Queue>
                 </div>
 
             </div>

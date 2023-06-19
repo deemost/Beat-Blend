@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react"
+import {useState, useEffect} from "react"
 // import SpotifyPlayer from "react-spotify-web-playback"
-import { spotifyApi } from 'react-spotify-web-playback';
+import {spotifyApi} from 'react-spotify-web-playback';
+import SpotifyQueueTrack from "./Spotify/SpotifyQueueTrack";
 // import getQueue from "react-spotify-web-playback"
 
-export default function Queue({newQueueResults, clearQ}) {
+export default function Queue({newQueueResults, clearQ, deleteFromQueue}) {
     // console.log(accessToken)
     const [queueResults, setQueueResults] = useState([])
 
@@ -11,7 +12,7 @@ export default function Queue({newQueueResults, clearQ}) {
 
         setQueueResults(newQueueResults);
 
-      }, [newQueueResults])
+    }, [newQueueResults])
 
 
     function clearQueue() {
@@ -21,24 +22,21 @@ export default function Queue({newQueueResults, clearQ}) {
     }
 
     return (
-      <div>
-          <h1>QUEUE:</h1>
-          {/*{ JSON.stringify(  queueResults)}*/}
+        <div>
+            <h1>QUEUE:</h1>
+            {/*{ JSON.stringify(  queueResults)}*/}
 
-          <button onClick={clearQueue}>Clear Queue</button>
+            <button onClick={clearQueue}>Clear Queue</button>
 
-          {queueResults.map((track) => (
-              <div>
-                  <img
-                      src={track.albumUrl}
-                      style={{ height: "32px", width: "32px" }}
-                  />
-                  {track.title}
-              </div>
-          ))}
+            {queueResults.map((track) => (
+
+                <div>
+                    <SpotifyQueueTrack track={track} deleteFromQueue={deleteFromQueue} trackIndexInQueue={newQueueResults.indexOf(track)}></SpotifyQueueTrack>
+                </div>
+                ))}
 
 
-      </div>
+        </div>
 
-  )
+    )
 }
