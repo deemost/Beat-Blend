@@ -19,7 +19,11 @@ export default function SpotifySearch({spotifyAccessToken, chooseTrack, addToQue
     }, [searchResults]);
 
     function doSearch(searchTerm) {
-        console.log('inside doSearch...')
+
+
+        if (searchTerm !== -1){
+
+            console.log('inside doSearch...')
         if (searchTerm != null) {
             spotifyApi.searchTracks(searchTerm).then((res) => {
                 let results = res.body.tracks.items.map((track) => {
@@ -38,10 +42,16 @@ export default function SpotifySearch({spotifyAccessToken, chooseTrack, addToQue
                         albumUrl: smallestAlbumImage.url,
                     };
                 });
-                console.log("results: "+ JSON.stringify(results));
+                console.log("results: " + JSON.stringify(results));
                 setSearchResults(results);
             });
         }
+
+    }
+        else{
+            setSearchResults([]);
+        }
+
     }
 
     return (
@@ -54,14 +64,12 @@ export default function SpotifySearch({spotifyAccessToken, chooseTrack, addToQue
                     if(e.target.value.length > 0){
                         doSearch(e.target.value);
                     }
+                    else{
+                        doSearch(-1);
+                    }
                 }
             }
             />
-
-            <div
-                className="flex-grow-1 my-2"
-                style={{overflowY: "auto"}}
-            >
 
             {searchResults.map((track) => (
                 <SpotifyTrackSearchResult
@@ -71,7 +79,7 @@ export default function SpotifySearch({spotifyAccessToken, chooseTrack, addToQue
                 />
             ))}
 
-            </div>
+
         </div>
     )
 }

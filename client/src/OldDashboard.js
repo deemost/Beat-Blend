@@ -15,7 +15,7 @@ const spotifyApi = new SpotifyWebApi({
     clientId: "8ecf06d5fca640ca80c33ef1d00287e2",
 });
 
-export default function Dashboard({code, whichService}) {
+export default function OldDashboard({code, whichService}) {
 
 
     const [search, setSearch] = useState("");
@@ -174,8 +174,7 @@ export default function Dashboard({code, whichService}) {
         axios
             .get("http://localhost:3001/spotify/lyrics", {
                 params: {
-                    track: playingTrack.title,
-                    artist: playingTrack.artist,
+                    track: playingTrack.title, artist: playingTrack.artist,
                 },
             })
             .then((res) => {
@@ -197,35 +196,24 @@ export default function Dashboard({code, whichService}) {
         let cancel = false;
         spotifyApi.searchTracks(search).then((res) => {
             if (cancel) return;
-            setSearchResults(
-                res.body.tracks.items.map((track) => {
-                    const smallestAlbumImage = track.album.images.reduce(
-                        (smallest, image) => {
-                            if (image.height < smallest.height) return image;
-                            return smallest;
-                        },
-                        track.album.images[0]
-                    );
+            setSearchResults(res.body.tracks.items.map((track) => {
+                const smallestAlbumImage = track.album.images.reduce((smallest, image) => {
+                    if (image.height < smallest.height) return image;
+                    return smallest;
+                }, track.album.images[0]);
 
-                    return {
-                        artist: track.artists[0].name,
-                        title: track.name,
-                        uri: track.uri,
-                        albumUrl: smallestAlbumImage.url,
-                    };
-                })
-            );
+                return {
+                    artist: track.artists[0].name, title: track.name, uri: track.uri, albumUrl: smallestAlbumImage.url,
+                };
+            }));
         });
 
         return () => (cancel = true);
     }, [search, SpotifyAccessToken]);
 
-    return (
-        <div>
-            {whichServiceSearch === "Spotify" ? (
-                <div>
-                    {loggedInWithSpotify ? (
-                        <div class="container-fluid">
+    return (<div>
+            {whichServiceSearch === "Spotify" ? (<div>
+                    {loggedInWithSpotify ? (<div class="container-fluid">
                             <div class="row">
                                 <div class="col-lg-8">
                                     <div class="row">
@@ -280,22 +268,18 @@ export default function Dashboard({code, whichService}) {
                                                     className="flex-grow-1 my-2"
                                                     style={{overflowY: "auto"}}
                                                 >
-                                                    {searchResults.map((track) => (
-                                                        <SpotifyTrackSearchResult
+                                                    {searchResults.map((track) => (<SpotifyTrackSearchResult
                                                             track={track}
                                                             key={track.uri}
                                                             chooseTrack={chooseTrack}
                                                             addToQueue={addToQueue}
-                                                        />
-                                                    ))}
-                                                    {searchResults.length === 0 && (
-                                                        <div
+                                                        />))}
+                                                    {searchResults.length === 0 && (<div
                                                             className="text-center"
                                                             style={{whiteSpace: "pre"}}
                                                         >
                                                             {lyrics}
-                                                        </div>
-                                                    )}
+                                                        </div>)}
                                                 </div>
                                                 {" "}
                                             </Container>
@@ -314,26 +298,19 @@ export default function Dashboard({code, whichService}) {
 
                                 <div class="col-lg-2">
                                     <Container>
-                                        <Queue></Queue>
+                                        QUEUE:
 
                                         <button onClick={clearQueue}>Clear Queue</button>
 
                                         {queueResults.map((track) => (
                                             <SpotifyQueueTrack track={track} deleteFromQueue={deleteFromQueue}
-                                                               trackIndexInQueue={queueResults.indexOf(track)}></SpotifyQueueTrack>
-                                        ))}
+                                                               trackIndexInQueue={queueResults.indexOf(track)}></SpotifyQueueTrack>))}
                                     </Container>
                                 </div>
                             </div>
-                        </div>
-                    ) : (
-                        <SpotifyLogin></SpotifyLogin>
-                    )}
-                </div>
-            ) : whichServiceSearch === "Apple Music" ? (
-                <div>
-                    {loggedInWithAppleMusic ? (
-                        <div class="container-fluid">
+                        </div>) : (<SpotifyLogin></SpotifyLogin>)}
+                </div>) : whichServiceSearch === "Apple Music" ? (<div>
+                    {loggedInWithAppleMusic ? (<div class="container-fluid">
                             <div class="row">
                                 <div class="col-lg-8">
                                     <div class="row">
@@ -388,22 +365,18 @@ export default function Dashboard({code, whichService}) {
                                                     className="flex-grow-1 my-2"
                                                     style={{overflowY: "auto"}}
                                                 >
-                                                    {searchResults.map((track) => (
-                                                        <SpotifyTrackSearchResult
+                                                    {searchResults.map((track) => (<SpotifyTrackSearchResult
                                                             track={track}
                                                             key={track.uri}
                                                             chooseTrack={chooseTrack}
                                                             addToQueue={addToQueue}
-                                                        />
-                                                    ))}
-                                                    {searchResults.length === 0 && (
-                                                        <div
+                                                        />))}
+                                                    {searchResults.length === 0 && (<div
                                                             className="text-center"
                                                             style={{whiteSpace: "pre"}}
                                                         >
                                                             {lyrics}
-                                                        </div>
-                                                    )}
+                                                        </div>)}
                                                 </div>
                                                 {" "}
                                             </Container>
@@ -420,27 +393,19 @@ export default function Dashboard({code, whichService}) {
                                     <Container>
                                         <Queue></Queue>
 
-                                        {queueResults.map((track) => (
-                                            <div>
+                                        {queueResults.map((track) => (<div>
                                                 <img
                                                     src={track.albumUrl}
                                                     style={{height: "32px", width: "32px"}}
                                                 />
                                                 {track.title}
-                                            </div>
-                                        ))}
+                                            </div>))}
                                     </Container>
                                 </div>
                             </div>
-                        </div>
-                    ) : (
-                        <SpotifyLogin></SpotifyLogin>
-                    )}
-                </div>
-            ) : whichServiceSearch === "Youtube" ? (
-                <div>
-                    {loggedInWithYoutube ? (
-                        <div class="container-fluid">
+                        </div>) : (<SpotifyLogin></SpotifyLogin>)}
+                </div>) : whichServiceSearch === "Youtube" ? (<div>
+                    {loggedInWithYoutube ? (<div class="container-fluid">
                             <div class="row">
                                 <div class="col-lg-8">
                                     <div class="row">
@@ -495,22 +460,18 @@ export default function Dashboard({code, whichService}) {
                                                     className="flex-grow-1 my-2"
                                                     style={{overflowY: "auto"}}
                                                 >
-                                                    {searchResults.map((track) => (
-                                                        <SpotifyTrackSearchResult
+                                                    {searchResults.map((track) => (<SpotifyTrackSearchResult
                                                             track={track}
                                                             key={track.uri}
                                                             chooseTrack={chooseTrack}
                                                             addToQueue={addToQueue}
-                                                        />
-                                                    ))}
-                                                    {searchResults.length === 0 && (
-                                                        <div
+                                                        />))}
+                                                    {searchResults.length === 0 && (<div
                                                             className="text-center"
                                                             style={{whiteSpace: "pre"}}
                                                         >
                                                             {lyrics}
-                                                        </div>
-                                                    )}
+                                                        </div>)}
                                                 </div>
                                                 {" "}
                                             </Container>
@@ -527,25 +488,18 @@ export default function Dashboard({code, whichService}) {
                                     <Container>
                                         <Queue></Queue>
 
-                                        {queueResults.map((track) => (
-                                            <div>
+                                        {queueResults.map((track) => (<div>
                                                 <img
                                                     src={track.albumUrl}
                                                     style={{height: "32px", width: "32px"}}
                                                 />
                                                 {track.title}
-                                            </div>
-                                        ))}
+                                            </div>))}
                                     </Container>
                                 </div>
                             </div>
-                        </div>
-                    ) : (
-                        <YoutubeLogin></YoutubeLogin>
-                    )}
-                </div>
-            ) : (
-                <div class="col-lg-8">
+                        </div>) : (<YoutubeLogin></YoutubeLogin>)}
+                </div>) : (<div class="col-lg-8">
                     <div class="row">
                         <div class="col-lg">
                             <button
@@ -577,8 +531,6 @@ export default function Dashboard({code, whichService}) {
                             </button>
                         </div>
                     </div>
-                </div>
-            )}
-        </div>
-    );
+                </div>)}
+        </div>);
 }

@@ -3,7 +3,7 @@ import SpotifyPlayer from "react-spotify-web-playback";
 
 export default function CustomSpotifyPlayer({ accessToken, trackUri, playNextInTheQueue }) {
   const [play, setPlay] = useState(true);
-  const [prevIsPlaying, setPrevIsPlaying] = useState(true);
+  const [prevIsPlaying, setPrevIsPlaying] = useState(false);
 
   useEffect(() => setPlay(true), [trackUri]);
   if (!accessToken) return null;
@@ -22,19 +22,20 @@ export default function CustomSpotifyPlayer({ accessToken, trackUri, playNextInT
         );
 
         if (
-          state.position == 0 &&
-          prevIsPlaying == true &&
-          state.isPlaying == false
+          state.position === 0 &&
+          prevIsPlaying === true &&
+          state.isPlaying === false
         ) {
           setTimeout(() => {
             playNextInTheQueue();
           }, 500);
 
           setPrevIsPlaying(false);
-        } else if (
-          state.position == 0 &&
-          prevIsPlaying == false &&
-          state.isPlaying == true
+        }
+        else if (
+          state.position === 0 &&
+          prevIsPlaying === false &&
+          state.isPlaying === true
         ) {
           setPrevIsPlaying(true);
         } else if (state.previousTracks.length > 0) {

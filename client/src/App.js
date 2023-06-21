@@ -1,8 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css"
-import Dashboard from "./Dashboard"
-import Dashboard2 from "./DashBoard2";
+import OldDashboard from "./OldDashboard"
+import SpotifyDashBoard from "./Spotify/SpotifyDashBoard";
+import MusicDashBoard from "./MusicDashBoard";
 
-const spotifyCode = new URLSearchParams(window.location.search).get("code");
+const spotifyAccessToken = new URLSearchParams(window.location.search).get("access_token");
 const linkThing = new URLSearchParams(window.location);
 let whichService = "N/A"
 
@@ -16,8 +17,9 @@ else{
 
 
 function App() {
-  // return <Dashboard code={spotifyCode} whichService={whichService}/>
-  return <Dashboard2 code={spotifyCode}/>
+  // return <OldDashboard code={spotifyAccessToken} whichService={whichService}/>
+  // return <SpotifyDashBoard code={spotifyAccessToken}/>
+  return <MusicDashBoard accessToken={spotifyAccessToken}/>
 }
 
 export default App

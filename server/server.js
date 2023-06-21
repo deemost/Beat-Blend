@@ -1,196 +1,63 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const lyricsFinder = require("lyrics-finder");
-const SpotifyWebApi = require("spotify-web-api-node");
-let queueResults = [];
-let spotifyAccessToken = "";
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const express = require('express');
+const logger = require('morgan');
+require('dotenv').config();
 
+/* Import Routes */
+const home = require('./routes/home');
+const callback = require('./routes/callback');
+const error = require('./routes/error');
+const login = require('./routes/login');
+const refresh = require('./routes/refresh');
+const queue = require('./routes/queue');
+const cors = require('cors');
+
+
+/* Instansiate the App */
 const app = express();
-app.use(cors());
+app.set('port', (process.env.PORT || 3001))
+
+/* App setup */
+app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(__dirname + '/public'));
+app.use(cors());
 
-app.post("/spotify/refresh", (req, res) => {
-  const refreshToken = req.body.refreshToken;
-  const spotifyApi = new SpotifyWebApi({
-    redirectUri: process.env.REDIRECT_URI,
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    refreshToken,
-  });
+/* View Engine setup */
+app.set('views', __dirname + '/views');
+app.set('view engine', 'pug');
 
-  spotifyApi
-    .refreshAccessToken()
-    .then((data) => {
-      res.json({
-        accessToken: data.body.accessToken,
-        expiresIn: data.body.expiresIn,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.sendStatus(400);
-    });
+/* Routes setup */
+app.use('/', home);
+app.use('/callback', callback);
+app.use('/error', error);
+app.use('/login', login);
+app.use('/refresh', refresh);
+app.use('/queue', queue);
+
+app.get('*',function (req, res) {
+    res.redirect('/');
 });
 
-app.post("/spotify/login", (req, res) => {
-  const code = req.body.code;
-  const spotifyApi = new SpotifyWebApi({
-    redirectUri: process.env.REDIRECT_URI,
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-  });
-
-  spotifyApi
-    .authorizationCodeGrant(code)
-    .then((data) => {
-      res.json({
-        accessToken: data.body.access_token,
-        refreshToken: data.body.refresh_token,
-        expiresIn: data.body.expires_in,
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.sendStatus(400);
-    });
+/* Error Handlers */
+// Catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
-app.get("/spotify/lyrics", async (req, res) => {
-  const lyrics =
-    (await lyricsFinder(req.query.artist, req.query.track)) ||
-    "No Lyrics Found";
-  res.json({ lyrics });
+// Error handler
+app.use(function(err, req, res, next) {
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
 
-
-
-
-
-app.post("/spotify/login/access", async (req, res) => {
-  // console.log(req.body.track);
-  spotifyAccessToken = req.body.accessToken
-  res.json({spotifyAccessToken}) 
-});
-
-app.get("/spotify/login/access", async (req, res) => {
-  // console.log(req.body.track);
-  res.json({spotifyAccessToken}) 
-});
-
-
-
-
-
-
-
-app.post("/spotify/queue", async (req, res) => {
-  // console.log(req.body.track);
-  queueResults.push(req.body.track);
-  res.json({queueResults}) 
-});
-
-app.get("/spotify/queue", async (req, res) => {
-  res.json({queueResults});
-});
-
-app.delete("/spotify/queue/specific", async (req, res) => {
-  console.log("thing: " +  JSON.stringify(  req.query.trackIndexInQueue));
-  queueResults.splice(req.query.trackIndexInQueue, 1);
-  res.json({queueResults})
-});
-
-app.delete("/spotify/queue/all", async (req, res) => {
-  queueResults = [];
-  res.json({queueResults}) 
-});  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-app.get("/youtube/login", (req, res) => {
-  return res.send(
-    "https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=http://localhost:3000&client_id=934374130370-fbe30ifh366vjc1ut5t4j3i6a4i066m4.apps.googleusercontent.com&access_type=offline&response_type=code&prompt=consent&scope=https://www.googleapis.com/auth/userinfo.profile%20https://www.googleapis.com/auth/userinfo.email"
-  );
-});
-
-function getTokens(code) {
-  /*
-   * Uses the code to get tokens
-   * that can be used to fetch the user's profile
-   */
-  const url = "https://oauth2.googleapis.com/token";
-  const values = {
-    code,
-    client_id:
-      "934374130370-fbe30ifh366vjc1ut5t4j3i6a4i066m4.apps.googleusercontent.com",
-    client_secret: "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",
-    redirect_uri: "http://localhost:3000",
-    grant_type: "authorization_code",
-  };
-
-  return axios
-    .post(url, querystring.stringify(values), {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    })
-    .then((res) => res.data)
-    .catch((error) => {
-      console.error(`Failed to fetch auth tokens`);
-      throw new Error(error.message);
-    });
-}
-
-app.get("http://localhost:3000", async (req, res) => {
-  const code = req.query.code.stringify;
-
-  const { id_token, access_token } = await getTokens(code);
-
-  // Fetch the user's profile with the access token and bearer
-  const googleUser = await axios
-    .get(
-      `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=` +
-        access_token,
-      {
-        headers: {
-          Authorization: `Bearer ` + id_token,
-        },
-      }
-    )
-    .then((res) => res.data)
-    .catch((error) => {
-      console.error(`Failed to fetch user`);
-      throw new Error(error.message);
-    });
-
-  res.redirect("http://localhost:3000");
-});
-
-
-
-
-
-
-
-
-
-
-app.listen(3001);
-
+/* App Go! */
+app.listen(app.get('port'), function() {
+    console.log("Spotify Auth Code token exchange is running on:" + app.get('port'))
+})

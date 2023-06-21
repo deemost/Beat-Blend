@@ -20,7 +20,7 @@ export default function SpotifyTrackSearchResult({ track, chooseTrack, addToQueu
       <div className="ml-3">
         <div>{track.title}</div>
         <div className="text-muted">{track.artist}</div>
-        <button onClick={handleQueue} type="button" class="btn btn-primary btn-sm">Add To Queue</button>
+        <button onClick={handleQueue} type="button" className="btn btn-primary btn-sm">Add To Queue</button>
       </div>
     </div>
   );
