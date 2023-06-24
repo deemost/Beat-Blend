@@ -19,7 +19,7 @@ var generateRandomString = function(length) {
 };
 
 /* API endpoint for login. */
-router.get('/', function(req, res) {
+router.get('/spotify', function(req, res) {
 
     var state = generateRandomString(16);
     res.cookie(stateKey, state);

@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 import CustomSpotifyPlayer from "./CustomSpotifyPlayer";
 import {Container} from "react-bootstrap";
 
-export default function SpotifyDashBoard({accessToken}) {
+export default function SpotifyDashBoard({accessToken, givePlayingTrack}) {
 
     const [queueResults, setQueueResults] = useState([]);
     const [playingTrack, setPlayingTrack] = useState();
@@ -18,7 +18,25 @@ export default function SpotifyDashBoard({accessToken}) {
     const spotifyAccessToken = accessToken;
 
 
-    console.log("access token = " + spotifyAccessToken);
+    // console.log("access token = " + spotifyAccessToken);
+
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:3001/queue/playingtrack")
+            .then((res) => {
+                setPlayingTrack(res.data.playingTrack);
+            });
+
+
+    }, []);
+
+    useEffect(() => {
+
+        givePlayingTrack(playingTrack);
+
+    }, [playingTrack]);
+
 
     useEffect(() => {
 
@@ -30,10 +48,16 @@ export default function SpotifyDashBoard({accessToken}) {
                 setQueueResults(res.data.queueResults);
             });
 
-    }, []);
+    }, [givePlayingTrack]);
 
     function chooseTrack(track) {
-        setPlayingTrack(track);
+        axios
+            .post("http://localhost:3001/queue/playingtrack", {
+                track
+            })
+            .then((res) => {
+                setPlayingTrack(track);
+            });
     }
 
     function addToQueue(track) {
@@ -54,16 +78,16 @@ export default function SpotifyDashBoard({accessToken}) {
             });
     }
 
-    function playNextInQueue() {
-        // console.log("QUEUE: " + queueResults);
-        setPlayingTrack(queueResults[0]);
-
-        axios
-            .delete("http://localhost:3001/queue/specific")
-            .then((res) => {
-                setQueueResults(res.data.queueResults);
-            });
-    }
+    // function playNextInQueue() {
+    //     // console.log("QUEUE: " + queueResults);
+    //     setPlayingTrack(queueResults[0]);
+    //
+    //     axios
+    //         .delete("http://localhost:3001/queue/specific")
+    //         .then((res) => {
+    //             setQueueResults(res.data.queueResults);
+    //         });
+    // }
 
     function deleteFromQueue(trackIndexInQueue) {
 
@@ -86,7 +110,7 @@ export default function SpotifyDashBoard({accessToken}) {
             <div className="col-8">
                 <Container
                     className="d-flex flex-column py-2"
-                    style={{height: "100vh"}}>
+                    style={{height: "90vh"}}>
 
                     <Container
                         className="d-flex flex-column py-2"
@@ -105,11 +129,11 @@ export default function SpotifyDashBoard({accessToken}) {
                     </Container>
 
                 <Container>
-                    <CustomSpotifyPlayer
-                        accessToken={spotifyAccessToken}
-                        trackUri={playingTrack?.uri}
-                        playNextInTheQueue={playNextInQueue}
-                    />
+                    {/*<CustomSpotifyPlayer*/}
+                    {/*    accessToken={spotifyAccessToken}*/}
+                    {/*    trackUri={playingTrack?.uri}*/}
+                    {/*    playNextInTheQueue={playNextInQueue}*/}
+                    {/*/>*/}
                 </Container>
 
                 </Container>

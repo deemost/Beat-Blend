@@ -3,7 +3,22 @@ var router = express.Router();
 
 
 let queueResults = [];
+let playingTrack;
 
+
+
+router.post("/playingtrack", function (req, res) {
+
+    // console.log(req.body.track);
+    playingTrack = req.body.track;
+    res.json({playingTrack})
+    console.log(playingTrack);
+});
+
+router.get("/playingtrack", function (req, res) {
+
+    res.json({playingTrack});
+});
 
 
 router.post("/", function (req, res) {
