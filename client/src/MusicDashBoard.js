@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import SpotifyDashBoard from "./Spotify/SpotifyDashBoard";
 import CustomSpotifyPlayer from "./Spotify/CustomSpotifyPlayer";
 import axios from "axios";
 import {Container} from "react-bootstrap";
@@ -13,10 +12,6 @@ export default function MusicDashBoard() {
     const [whichService, setWhichService] = useState("");
     const [playingTrack, setPlayingTrack] = useState();
     const [queueResults, setQueueResults] = useState([]);
-
-
-    // console.log("queue results: " + JSON.stringify(queueResults));
-
 
     useEffect(() => {
 
@@ -45,19 +40,6 @@ export default function MusicDashBoard() {
 
     }, []);
 
-
-    function givePlayingTrack(track){
-
-
-        // axios
-        //     .post("http://localhost:3001/queue/playingtrack", {
-        //         track
-        //     })
-        //     .then((res) => {
-        //         setPlayingTrack(res.data.playingTrack);
-        //     });
-        setPlayingTrack(track);
-    }
 
     function playNextInQueue() {
         axios
@@ -190,7 +172,7 @@ export default function MusicDashBoard() {
 
 
             {whichService === "Spotify" ? (
-                <SpotifyDashBoard accessToken={accessToken} givePlayingTrack={givePlayingTrack}></SpotifyDashBoard>) : whichService === "Apple Music" ? (
+                <h1>    </h1>) : whichService === "Apple Music" ? (
                 <h1>Apple Music Not Available Yet</h1>) : whichService === "Youtube" ? (
                 <h1>Youtube Not Available Yet</h1>) : (<h1>No Player Selected</h1>)}
 
@@ -204,7 +186,7 @@ export default function MusicDashBoard() {
 
                         <Container
                             className="d-flex flex-column py-2"
-                            style={{height: "85vh"}}>
+                            style={{height: "75vh"}}>
                             <div
                                 className="flex-grow-1 my-2"
                                 style={{overflowY: "auto"}}

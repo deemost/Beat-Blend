@@ -1,11 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css"
-import OldDashboard from "./OldDashboard"
-import SpotifyDashBoard from "./Spotify/SpotifyDashBoard";
 import MusicDashBoard from "./MusicDashBoard";
 
 // const spotifyAccessToken = new URLSearchParams(window.location.search).get("access_token");
 const linkThing = new URLSearchParams(window.location);
-let whichService = "N/A"
+let whichService;
 
 if(linkThing.toString().includes("google")){
   whichService = "Youtube";
