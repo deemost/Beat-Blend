@@ -4,6 +4,33 @@ var request = require('request');
 var router = express.Router();
 var stateKey = 'spotify_auth_state';
 
+
+
+
+
+
+let access_token = "";
+
+
+
+router.get("/access", function (req, res) {
+
+    res.json({access_token});
+});
+
+
+router.post("/access", function (req, res) {
+
+    // console.log(req.body.track);
+    access_token = (req.body.new_token);
+    res.json({access_token})
+});
+
+
+
+
+
+
 /* GET callback page */
 router.get('/', function(req, res, next) {
 
@@ -44,8 +71,8 @@ router.get('/', function(req, res, next) {
         if (!error && response.statusCode === 200) {
 
             // got a token
-            var access_token = body.access_token,
-                refresh_token = body.refresh_token;
+             access_token = body.access_token;
+              var  refresh_token = body.refresh_token;
 
             res.redirect(process.env.FINAL_RESPONSE_URI + '?' +
                 querystring.stringify({

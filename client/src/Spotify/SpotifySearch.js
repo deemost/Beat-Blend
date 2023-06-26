@@ -72,11 +72,13 @@ export default function SpotifySearch({spotifyAccessToken, chooseTrack, addToQue
             />
 
             {searchResults.map((track) => (
-                <SpotifyTrackSearchResult
-                    track={track}
-                    chooseTrack={chooseTrack}
-                    addToQueue={addToQueue}
-                />
+                <div key={track.uri}>
+                    <SpotifyTrackSearchResult
+                        track={track}
+                        chooseTrack={chooseTrack}
+                        addToQueue={addToQueue}
+                    />
+                </div>
             ))}
 
 

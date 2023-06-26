@@ -2,7 +2,7 @@ import React from "react";
 
 export default function SpotifyQueueTrack({ track, deleteFromQueue, trackIndexInQueue }) {
   function handleDeleteQueue() {
-    // console.log( "JJJJJJJJ" + JSON.stringify(track));
+    console.log("========== " + JSON.stringify(track));
     deleteFromQueue(trackIndexInQueue);
   }
 
@@ -10,7 +10,7 @@ export default function SpotifyQueueTrack({ track, deleteFromQueue, trackIndexIn
     <div>
       <img src={track.albumUrl} style={{ height: "32px", width: "32px" }} />
       {track.title}
-      <button onClick={handleDeleteQueue} type="button" class="btn btn-primary btn-sm">X</button>
+      <button onClick={handleDeleteQueue} type="button" className="btn btn-primary btn-sm">X</button>
     </div>
   );
 }

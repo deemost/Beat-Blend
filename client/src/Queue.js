@@ -30,7 +30,7 @@ export default function Queue({newQueueResults, clearQ, deleteFromQueue}) {
 
             {queueResults.map((track) => (
 
-                <div>
+                <div key={track.uri}>
                     <SpotifyQueueTrack track={track} deleteFromQueue={deleteFromQueue} trackIndexInQueue={newQueueResults.indexOf(track)}></SpotifyQueueTrack>
                 </div>
                 ))}

@@ -3,7 +3,7 @@ import OldDashboard from "./OldDashboard"
 import SpotifyDashBoard from "./Spotify/SpotifyDashBoard";
 import MusicDashBoard from "./MusicDashBoard";
 
-const spotifyAccessToken = new URLSearchParams(window.location.search).get("access_token");
+// const spotifyAccessToken = new URLSearchParams(window.location.search).get("access_token");
 const linkThing = new URLSearchParams(window.location);
 let whichService = "N/A"
 
@@ -19,7 +19,7 @@ else{
 function App() {
   // return <OldDashboard code={spotifyAccessToken} whichService={whichService}/>
   // return <SpotifyDashBoard code={spotifyAccessToken}/>
-  return <MusicDashBoard accessToken={spotifyAccessToken}/>
+  return <MusicDashBoard/>
 }
 
 export default App
