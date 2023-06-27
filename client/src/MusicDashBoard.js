@@ -8,7 +8,8 @@ import Queue from "./Queue";
 
 export default function MusicDashBoard() {
 
-    const [accessToken, setAccessToken] = useState("");
+    const [spotifyAccessToken, setSpotifyAccessToken] = useState("");
+    const [youtubeAccessToken, setYoutubeAccessToken] = useState("");
     const [whichService, setWhichService] = useState("");
     const [playingTrack, setPlayingTrack] = useState();
     const [queueResults, setQueueResults] = useState([]);
@@ -23,9 +24,15 @@ export default function MusicDashBoard() {
             });
 
         axios
-            .get("http://localhost:3001/callback/access")
+            .get("http://localhost:3001/callback/spotify/access")
             .then((res) => {
-                setAccessToken(res.data.access_token);
+                setSpotifyAccessToken(res.data.access_token);
+            });
+
+        axios
+            .get("http://localhost:3001/callback/youtube/access")
+            .then((res) => {
+                setYoutubeAccessToken(res.data.access_token);
             });
 
         axios
@@ -35,7 +42,7 @@ export default function MusicDashBoard() {
             });
 
 
-        console.log("access token: " + accessToken);
+        console.log("access token: " + spotifyAccessToken);
 
 
     }, []);
@@ -72,17 +79,29 @@ export default function MusicDashBoard() {
     const handleButtonsClick = (str) => () => {
         setWhichService(str);
 
-        if(str === "Spotify" &&  !accessToken){
+        if(str === "Spotify" &&  !spotifyAccessToken){
             window.location.replace('http://localhost:3001/login/spotify');
             }
 
+        if(str === "Youtube" &&  !youtubeAccessToken){
+            window.location.replace('http://localhost:3001/login/youtube');
+        }
+
         if(str === "Logout"){
             axios
-                .post("http://localhost:3001/callback/access", {
+                .post("http://localhost:3001/callback/spotify/access", {
                     undefined
                 })
                 .then((res) => {
-                    setAccessToken(res.data.access_token);
+                    setSpotifyAccessToken(res.data.access_token);
+                });
+
+            axios
+                .post("http://localhost:3001/callback/youtube/access", {
+                    undefined
+                })
+                .then((res) => {
+                    setYoutubeAccessToken(res.data.access_token);
                 });
         }
     };
@@ -192,7 +211,7 @@ export default function MusicDashBoard() {
                                 style={{overflowY: "auto"}}
                             >
                                 <SpotifySearch
-                                    spotifyAccessToken={accessToken}
+                                    spotifyAccessToken={spotifyAccessToken}
                                     chooseTrack={chooseTrack}
                                     addToQueue={addToQueue}
                                 />
@@ -202,7 +221,7 @@ export default function MusicDashBoard() {
 
                         <Container>
                             <CustomSpotifyPlayer
-                                accessToken={accessToken}
+                                accessToken={spotifyAccessToken}
                                 trackUri={playingTrack?.uri}
                                 playNextInTheQueue={playNextInQueue}
                             />

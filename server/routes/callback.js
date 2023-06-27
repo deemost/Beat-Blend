@@ -2,28 +2,43 @@ var express = require('express');
 var querystring = require('querystring');
 var request = require('request');
 var router = express.Router();
-var stateKey = 'spotify_auth_state';
+var spotifyStateKey = 'spotify_auth_state';
+var youtubeStateKey = 'google_auth_state';
 
 
 
 
 
 
-let access_token = "";
+let spotify_access_token = "";
+let youtube_access_token = "";
 
 
 
-router.get("/access", function (req, res) {
+router.get("/spotify/access", function (req, res) {
 
-    res.json({access_token});
+    res.json({access_token: spotify_access_token});
 });
 
 
-router.post("/access", function (req, res) {
+router.post("/spotify/access", function (req, res) {
 
     // console.log(req.body.track);
-    access_token = (req.body.new_token);
-    res.json({access_token})
+    spotify_access_token = (req.body.new_token);
+    res.json({access_token: spotify_access_token})
+});
+
+router.get("/youtube/access", function (req, res) {
+
+    res.json({access_token: youtube_access_token});
+});
+
+
+router.post("/youtube/access", function (req, res) {
+
+    // console.log(req.body.track);
+    youtube_access_token = (req.body.new_token);
+    res.json({access_token: youtube_access_token})
 });
 
 
@@ -32,11 +47,11 @@ router.post("/access", function (req, res) {
 
 
 /* GET callback page */
-router.get('/', function(req, res, next) {
+router.get('/spotify', function(req, res, next) {
 
     var code = req.query.code || null;
     var state = req.query.state || null;
-    var storedState = req.cookies ? req.cookies[stateKey] : null;
+    var storedState = req.cookies ? req.cookies[spotifyStateKey] : null;
 
     // Check to ensure the state matches.
     if (state === null || state !== storedState) {
@@ -48,19 +63,19 @@ router.get('/', function(req, res, next) {
             }));
 
     } else {
-        // if state matches, clear the stateKey cookie, we're finished with it
-        res.clearCookie(stateKey);
+        // if state matches, clear the spotifyStateKey cookie, we're finished with it
+        res.clearCookie(spotifyStateKey);
 
         // prepare a token request
         var authOptions = {
             url: 'https://accounts.spotify.com/api/token',
             form: {
                 code: code,
-                redirect_uri: process.env.REDIRECT_URI,
+                redirect_uri: process.env.SPOTIFY_REDIRECT_URI,
                 grant_type: 'authorization_code'
             },
             headers: {
-                'Authorization': 'Basic ' + (new Buffer(process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET).toString('base64'))
+                'Authorization': 'Basic ' + (new Buffer(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString('base64'))
             },
             json: true
         };
@@ -71,12 +86,72 @@ router.get('/', function(req, res, next) {
         if (!error && response.statusCode === 200) {
 
             // got a token
-             access_token = body.access_token;
+             spotify_access_token = body.access_token;
               var  refresh_token = body.refresh_token;
 
             res.redirect(process.env.FINAL_RESPONSE_URI + '?' +
                 querystring.stringify({
-                    access_token: access_token,
+                    access_token: spotify_access_token,
+                    refresh_token: refresh_token
+                }));
+
+        } else {
+            // or error
+            res.redirect('/error?' +
+                querystring.stringify({
+                    error: 'invalid_token'
+                }));
+        }
+    });
+});
+
+
+
+router.get('/youtube', function(req, res, next) {
+
+    var code = req.query.code || null;
+    var state = req.query.state || null;
+    var storedState = req.cookies ? req.cookies[youtubeStateKey] : null;
+
+    // Check to ensure the state matches.
+    if (state === null || state !== storedState) {
+
+        // if it doesn't, error!
+        res.redirect('/error?' +
+            querystring.stringify({
+                error: 'state_mismatch'
+            }));
+
+    } else {
+        // if state matches, clear the spotifyStateKey cookie, we're finished with it
+        res.clearCookie(youtubeStateKey);
+
+        // prepare a token request
+        var authOptions = {
+            url: 'https://oauth2.googleapis.com/token',
+            form: {
+                code: code,
+                redirect_uri: process.env.YOUTUBE_REDIRECT_URI,
+                grant_type: 'authorization_code'
+            },
+            headers: {
+                'Authorization': 'Basic ' + (new Buffer(process.env.YOUTUBE_CLIENT_ID + ':' + process.env.YOUTUBE_CLIENT_SECRET).toString('base64'))
+            },
+            json: true
+        };
+    };
+
+    // Request a token
+    request.post(authOptions, function(error, response, body) {
+        if (!error && response.statusCode === 200) {
+
+            // got a token
+            youtube_access_token = body.access_token;
+            var  refresh_token = body.refresh_token;
+
+            res.redirect(process.env.FINAL_RESPONSE_URI + '?' +
+                querystring.stringify({
+                    access_token: youtube_access_token,
                     refresh_token: refresh_token
                 }));
 

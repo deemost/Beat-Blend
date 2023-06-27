@@ -5,19 +5,17 @@ import MusicDashBoard from "./MusicDashBoard";
 const linkThing = new URLSearchParams(window.location);
 let whichService;
 
-if(linkThing.toString().includes("google")){
-  whichService = "Youtube";
+if (linkThing.toString().includes("google")) {
+    whichService = "Youtube";
+} else {
+    whichService = "Spotify";
 }
-else{
-  whichService = "Spotify"
-}
-
 
 
 function App() {
-  // return <OldDashboard code={spotifyAccessToken} whichService={whichService}/>
-  // return <SpotifyDashBoard code={spotifyAccessToken}/>
-  return <MusicDashBoard/>
+    // return <OldDashboard code={spotifyAccessToken} whichService={whichService}/>
+    // return <SpotifyDashBoard code={spotifyAccessToken}/>
+    return <MusicDashBoard/>
 }
 
 export default App
