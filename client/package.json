@@ -21,7 +21,9 @@
     "sort-by": "^1.2.0",
     "spotify-web-api-node": "^5.0.2",
     "use-sound": "^4.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "youtube-search": "^1.1.6",
+    "youtube-search-api": "^1.2.0"
   },
   "scripts": {
     "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",

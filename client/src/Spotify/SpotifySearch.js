@@ -58,7 +58,7 @@ export default function SpotifySearch({spotifyAccessToken, chooseTrack, addToQue
         <div>
             <Form.Control
                 type="text"
-                placeholder="Search Songs/Artists"
+                placeholder="SPOTIFY Search Songs/Artists"
                 onChange={(e) => {
                     console.log("inside onChange...")
                     if(e.target.value.length > 0){

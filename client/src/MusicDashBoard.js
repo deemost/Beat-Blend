@@ -3,7 +3,9 @@ import CustomSpotifyPlayer from "./Spotify/CustomSpotifyPlayer";
 import axios from "axios";
 import {Container} from "react-bootstrap";
 import SpotifySearch from "./Spotify/SpotifySearch";
+import YoutubeSearch from "./Youtube/YoutubeSearch";
 import Queue from "./Queue";
+import CustomYoutubePlayer from "./Youtube/CustomYoutubePlayer";
 
 
 export default function MusicDashBoard() {
@@ -62,7 +64,7 @@ export default function MusicDashBoard() {
 
         axios
             .post("http://localhost:3001/queue/playingtrack", {
-             track: (queueResults[0])
+                track: (queueResults[0])
             })
             .then((res) => {
                 setPlayingTrack(res.data.playingTrack);
@@ -79,15 +81,15 @@ export default function MusicDashBoard() {
     const handleButtonsClick = (str) => () => {
         setWhichService(str);
 
-        if(str === "Spotify" &&  !spotifyAccessToken){
+        if (str === "Spotify" && !spotifyAccessToken) {
             window.location.replace('http://localhost:3001/login/spotify');
-            }
+        }
 
-        if(str === "Youtube" &&  !youtubeAccessToken){
+        if (str === "Youtube" && !youtubeAccessToken) {
             window.location.replace('http://localhost:3001/login/youtube');
         }
 
-        if(str === "Logout"){
+        if (str === "Logout") {
             axios
                 .post("http://localhost:3001/callback/spotify/access", {
                     undefined
@@ -105,10 +107,6 @@ export default function MusicDashBoard() {
                 });
         }
     };
-
-
-
-
 
 
     function chooseTrack(track) {
@@ -158,14 +156,13 @@ export default function MusicDashBoard() {
     }
 
 
-
     return (
 
         <div>
 
             <div className="row">
                 <div className="col-lg">
-                   <button type="button" onClick={handleButtonsClick("Spotify")}
+                    <button type="button" onClick={handleButtonsClick("Spotify")}
                             className="btn btn-success btn-lg btn-block"> Spotify
                     </button>
                 </div>
@@ -190,15 +187,11 @@ export default function MusicDashBoard() {
             </div>
 
 
-            {whichService === "Spotify" ? (
-                <h1>    </h1>) : whichService === "Apple Music" ? (
-                <h1>Apple Music Not Available Yet</h1>) : whichService === "Youtube" ? (
-                <h1>Youtube Not Available Yet</h1>) : (<h1>No Player Selected</h1>)}
-
-
             <div className="row">
 
                 <div className="col-8">
+
+
                     <Container
                         className="d-flex flex-column py-2"
                         style={{height: "90vh"}}>
@@ -206,36 +199,51 @@ export default function MusicDashBoard() {
                         <Container
                             className="d-flex flex-column py-2"
                             style={{height: "75vh"}}>
-                            <div
-                                className="flex-grow-1 my-2"
-                                style={{overflowY: "auto"}}
-                            >
-                                <SpotifySearch
-                                    spotifyAccessToken={spotifyAccessToken}
-                                    chooseTrack={chooseTrack}
-                                    addToQueue={addToQueue}
-                                />
-                            </div>
+
+
+                            {whichService === "Spotify" ? (
+
+                                    <SpotifySearch
+                                        spotifyAccessToken={spotifyAccessToken}
+                                        chooseTrack={chooseTrack}
+                                        addToQueue={addToQueue}
+                                    />)
+
+
+                                : whichService === "Apple Music" ? (
+                                        <h1>Apple Music Not Available Yet</h1>)
+
+
+                                    : whichService === "Youtube" ? (
+
+                                            <YoutubeSearch
+                                                youtubeAccessToken={youtubeAccessToken}
+                                                chooseTrack={chooseTrack}
+                                                addToQueue={addToQueue}
+                                            />)
+
+
+                                        : (<h1>No Player Selected</h1>)}
+
 
                         </Container>
-
                         <Container>
+
                             <CustomSpotifyPlayer
                                 accessToken={spotifyAccessToken}
                                 trackUri={playingTrack?.uri}
                                 playNextInTheQueue={playNextInQueue}
                             />
-                        </Container>
 
+                        </Container>
                     </Container>
                 </div>
-
 
                 <div className="col">
                     <Queue newQueueResults={queueResults} clearQ={clearQueue} deleteFromQueue={deleteFromQueue}/>
                 </div>
 
-        </div>
+            </div>
         </div>
     )
 

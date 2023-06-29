@@ -43,10 +43,7 @@ router.get('/youtube', function(req, res) {
     var state = generateRandomString(16);
     res.cookie(youtubeStateKey, state);
 
-    // your application requests authorization
-    // var scope = 'user-read-private user-read-email user-read-currently-playing user-modify-playback-state';
-    // var scope = 'streaming user-read-email user-read-private user-library-read user-library-modify user-read-playback-state user-modify-playback-state';
-    let scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
+    let scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/youtube';
 
 
     // "https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=http://localhost:3000&client_id=934374130370-fbe30ifh366vjc1ut5t4j3i6a4i066m4.apps.googleusercontent.com&access_type=offline&response_type=code&prompt=consent&"
