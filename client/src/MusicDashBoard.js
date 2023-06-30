@@ -5,6 +5,10 @@ import {Container} from "react-bootstrap";
 import SpotifySearch from "./Spotify/SpotifySearch";
 import YoutubeSearch from "./Youtube/YoutubeSearch";
 import Queue from "./Queue";
+import spotifylogo from "./spotifylogo.png"
+import spotifylogo2 from "./spotifylogo2.png"
+import "./testing-background.css";
+
 import CustomYoutubePlayer from "./Youtube/CustomYoutubePlayer";
 
 
@@ -158,13 +162,16 @@ export default function MusicDashBoard() {
 
     return (
 
-        <div className="p-3 mb-2 bg-warning text-dark">
+        // <div className="p-3 mb-2 bg-warning text-dark">
 
+        <div className="header">
             <div className="row">
                 <div className="col-lg">
                     <button type="button" onClick={handleButtonsClick("Spotify")}
                             className="btn btn-success btn-lg btn-block"> Spotify
                     </button>
+                    {/*<img onClick={handleButtonsClick("Spotify")} src={spotifylogo2} style={{ height: "100px", width: "300px", overflow: "hidden", display: "flex" }}/>*/}
+
                 </div>
 
                 <div className="col-lg">
