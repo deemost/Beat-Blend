@@ -158,7 +158,7 @@ export default function MusicDashBoard() {
 
     return (
 
-        <div>
+        <div className="p-3 mb-2 bg-warning text-dark">
 
             <div className="row">
                 <div className="col-lg">
@@ -198,7 +198,7 @@ export default function MusicDashBoard() {
 
                         <Container
                             className="d-flex flex-column py-2"
-                            style={{height: "75vh"}}>
+                            style={{height: "75vh" ,padding: "1rem", overflow: "auto"}}>
 
 
                             {whichService === "Spotify" ? (
@@ -228,7 +228,6 @@ export default function MusicDashBoard() {
 
                         </Container>
                         <Container>
-
                             <CustomSpotifyPlayer
                                 accessToken={spotifyAccessToken}
                                 trackUri={playingTrack?.uri}

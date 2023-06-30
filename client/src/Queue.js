@@ -1,7 +1,7 @@
-import {useState, useEffect} from "react"
+import React, {useEffect, useState} from "react"
 // import SpotifyPlayer from "react-spotify-web-playback"
-import {spotifyApi} from 'react-spotify-web-playback';
 import SpotifyQueueTrack from "./Spotify/SpotifyQueueTrack";
+import {Button} from "react-bootstrap";
 // import getQueue from "react-spotify-web-playback"
 
 export default function Queue({newQueueResults, clearQ, deleteFromQueue}) {
@@ -23,19 +23,21 @@ export default function Queue({newQueueResults, clearQ, deleteFromQueue}) {
 
     return (
         <div>
-            <h1>QUEUE:</h1>
+            <h1>Queue</h1>
             {/*{ JSON.stringify(  queueResults)}*/}
-
-            <button onClick={clearQueue}>Clear Queue</button>
+            <Button variant="danger"
+                    onClick={clearQueue}
+                    style={{fontSize: 13}}
+                    size="lg">Clear Queue</Button>
 
             {queueResults.map((track) => (
-
                 <div key={track.uri}>
-                    <SpotifyQueueTrack track={track} deleteFromQueue={deleteFromQueue} trackIndexInQueue={newQueueResults.indexOf(track)}></SpotifyQueueTrack>
+                    <SpotifyQueueTrack track={track}
+                                       deleteFromQueue={deleteFromQueue}
+                                       trackIndexInQueue={newQueueResults.indexOf(track)}/>
                 </div>
-                ))}
-
-
+            ))
+            }
         </div>
 
     )

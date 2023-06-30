@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react"
 // import SpotifyPlayer from "react-spotify-web-playback"
 import SpotifyWebApi from "spotify-web-api-node";
-import {Form} from "react-bootstrap";
+import {Container, Form} from "react-bootstrap";
 import SpotifyTrackSearchResult from "./SpotifyTrackSearchResult";
 // import getQueue from "react-spotify-web-playback"
 
@@ -80,7 +80,6 @@ export default function SpotifySearch({spotifyAccessToken, chooseTrack, addToQue
                     />
                 </div>
             ))}
-
 
         </div>
     )
