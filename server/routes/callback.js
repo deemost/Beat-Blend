@@ -1,19 +1,14 @@
 var express = require('express');
 var querystring = require('querystring');
 var request = require('request');
+const {encode} = require("querystring");
 var router = express.Router();
 var spotifyStateKey = 'spotify_auth_state';
 var youtubeStateKey = 'google_auth_state';
-
-
-
-
-
-
 let spotify_access_token = "";
 let youtube_access_token = "";
 
-
+// export default youtube_access_token;
 
 router.get("/spotify/access", function (req, res) {
 
@@ -79,7 +74,7 @@ router.get('/spotify', function(req, res, next) {
             },
             json: true
         };
-    };
+    }
 
     // Request a token
     request.post(authOptions, function(error, response, body) {
@@ -139,7 +134,7 @@ router.get('/youtube', function(req, res, next) {
             },
             json: true
         };
-    };
+    }
 
     // Request a token
     request.post(authOptions, function(error, response, body) {
@@ -166,3 +161,4 @@ router.get('/youtube', function(req, res, next) {
 });
 
 module.exports = router;
+module.exports.youtubeAccessToken = youtube_access_token;

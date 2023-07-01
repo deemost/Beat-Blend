@@ -14,7 +14,7 @@ const queue = require('./routes/queue');
 const cors = require('cors');
 
 
-/* Instansiate the App */
+/* Instantiate the App */
 const app = express();
 app.set('port', (process.env.PORT || 3001))
 
@@ -27,8 +27,9 @@ app.use(express.static(__dirname + '/public'));
 app.use(cors());
 
 /* View Engine setup */
-app.set('views', __dirname + '/views');
-app.set('view engine', 'pug');
+// app.set('views', __dirname + '/views');
+// app.set('view engine', 'pug');
+
 
 /* Routes setup */
 app.use('/', home);
@@ -44,20 +45,20 @@ app.get('*',function (req, res) {
 
 /* Error Handlers */
 // Catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
+// app.use(function(req, res, next) {
+//     var err = new Error('Not Found');
+//     err.status = 404;
+//     next(err);
+// });
 
 // Error handler
-app.use(function(err, req, res, next) {
-    // render the error page
-    res.status(err.status || 500);
-    res.render('error');
-});
+// app.use(function(err, req, res, next) {
+//     // render the error page
+//     res.status(err.status || 500);
+//     res.render('error');
+// });
 
 /* App Go! */
 app.listen(app.get('port'), function() {
-    console.log("Spotify Auth Code token exchange is running on:" + app.get('port'))
+    console.log("Server is running on:" + app.get('port'))
 })

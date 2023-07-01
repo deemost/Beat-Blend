@@ -1,15 +1,11 @@
 import React, {useEffect, useState} from "react";
 import CustomSpotifyPlayer from "./Spotify/CustomSpotifyPlayer";
 import axios from "axios";
-import {Container} from "react-bootstrap";
+import {Container, Navbar} from "react-bootstrap";
 import SpotifySearch from "./Spotify/SpotifySearch";
 import YoutubeSearch from "./Youtube/YoutubeSearch";
 import Queue from "./Queue";
-import spotifylogo from "./spotifylogo.png"
-import spotifylogo2 from "./spotifylogo2.png"
-import "./testing-background.css";
-
-import CustomYoutubePlayer from "./Youtube/CustomYoutubePlayer";
+import Nav from 'react-bootstrap/Nav';
 
 
 export default function MusicDashBoard() {
@@ -161,36 +157,41 @@ export default function MusicDashBoard() {
 
 
     return (
+        <div>
 
-        // <div className="p-3 mb-2 bg-warning text-dark">
-
-        <div className="header">
-            <div className="row">
-                <div className="col-lg">
-                    <button type="button" onClick={handleButtonsClick("Spotify")}
-                            className="btn btn-success btn-lg btn-block"> Spotify
-                    </button>
-                    {/*<img onClick={handleButtonsClick("Spotify")} src={spotifylogo2} style={{ height: "100px", width: "300px", overflow: "hidden", display: "flex" }}/>*/}
-
-                </div>
-
-                <div className="col-lg">
-                    <button type="button" onClick={handleButtonsClick("Apple Music")}
-                            className="btn btn-info btn-lg btn-block"> Apple Music
-                    </button>
-                </div>
-
-                <div className="col-lg">
-                    <button type="button" onClick={handleButtonsClick("Youtube")}
-                            className="btn btn-danger btn-lg btn-block"> Youtube
-                    </button>
-                </div>
-
-                <div className="col-lg">
-                    <button type="button" onClick={handleButtonsClick("Logout")}
-                            className="btn btn-lg btn-block"> Logout
-                    </button>
-                </div>
+            <div className="row" style={{backgroundColor: 'white'}}>
+                <Navbar expand="sm" variant="light">
+                    <Container>
+                        <Navbar.Toggle/>
+                        <Navbar.Collapse id="basic-navbar-nav">
+                            <Nav>
+                                <Nav.Item>
+                                    <Nav.Link onClick={handleButtonsClick("Spotify")}
+                                              className='btn btn-success btn-sm'
+                                              style={{color: 'white'}}>Spotify</Nav.Link>
+                                </Nav.Item>
+                                <div>&nbsp;</div>
+                                <Nav.Item>
+                                    <Nav.Link onClick={handleButtonsClick("Youtube")}
+                                              className='btn btn-danger btn-sm'
+                                              style={{color: 'white'}}>YouTube</Nav.Link>
+                                </Nav.Item>
+                                <div>&nbsp;</div>
+                                <Nav.Item>
+                                    <Nav.Link eventKey="disabled" disabled
+                                              className='btn btn-info btn-sm'
+                                              style={{color: 'white'}}>Apple Music</Nav.Link>
+                                </Nav.Item>
+                                <div>&nbsp;</div>
+                                <Nav.Item>
+                                    <Nav.Link onClick={handleButtonsClick("Logout")}
+                                              className='btn btn-light btn-sm'
+                                              style={{color: 'black'}}>Logout</Nav.Link>
+                                </Nav.Item>
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Container>
+                </Navbar>
             </div>
 
 
@@ -205,7 +206,7 @@ export default function MusicDashBoard() {
 
                         <Container
                             className="d-flex flex-column py-2"
-                            style={{height: "75vh" ,padding: "1rem", overflow: "auto"}}>
+                            style={{height: "75vh", padding: "1rem", overflow: "auto"}}>
 
 
                             {whichService === "Spotify" ? (
