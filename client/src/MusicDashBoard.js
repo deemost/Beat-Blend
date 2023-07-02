@@ -17,6 +17,8 @@ export default function MusicDashBoard() {
     const [queueResults, setQueueResults] = useState([]);
     const [room, setRoom] = useState("");
 
+
+
     useEffect(() => {
         axios
             .get("http://localhost:3001/queue/playingtrack")
@@ -49,7 +51,8 @@ export default function MusicDashBoard() {
             });
 
         console.log("access token: " + spotifyAccessToken);
-    });
+        // eslint-disable-next-line
+    }, []);
 
 
     function playNextInQueue() {

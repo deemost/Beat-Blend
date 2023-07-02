@@ -19,3 +19,10 @@ https://developer.spotify.com/documentation/web-api
 
 ### Other Settings
 In `/server/.env` file, specify `FINAL_RESPONSE_URI=http://localhost:3000` 
+
+
+### Heroku
+1. `heroku login`
+2. `cd spotify-clone`
+3. `heroku git:remote -a beatblend` (this is a one-time command to create the Heroku remote)
+4. `git subtree push --prefix server heroku main`
