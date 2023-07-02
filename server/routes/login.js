@@ -1,33 +1,37 @@
-var express = require('express');
-var querystring = require('querystring');
-var router = express.Router();
-var spotifyStateKey = 'spotify_auth_state';
-var youtubeStateKey = 'google_auth_state';
+const express = require('express');
+const querystring = require('querystring');
+const router = express.Router();
+const spotifyStateKey = 'spotify_auth_state';
+const youtubeStateKey = 'google_auth_state';
 
 /**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string
  * @return {string} The generated string
  */
-var generateRandomString = function(length) {
-    var text = '';
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+const generateRandomString = function (length) {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-    for (var i = 0; i < length; i++) {
+    for (let i = 0; i < length; i++) {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return text;
 };
 
-/* API endpoint for login. */
-router.get('/spotify', function(req, res) {
+// ------------ spotify login redirect
+router.get('/spotify', function (req, res) {
 
-    var state = generateRandomString(16);
+    const state = generateRandomString(16);
     res.cookie(spotifyStateKey, state);
 
-    // your application requests authorization
-    // var scope = 'user-read-private user-read-email user-read-currently-playing user-modify-playback-state';
-    var scope = 'streaming user-read-email user-read-private user-library-read user-library-modify user-read-playback-state user-modify-playback-state';
+    const scope =
+        'streaming user-read-email ' +
+        'user-read-private ' +
+        'user-library-read ' +
+        'user-library-modify ' +
+        'user-read-playback-state ' +
+        'user-modify-playback-state';
     res.redirect('https://accounts.spotify.com/authorize?' +
         querystring.stringify({
             response_type: 'code',
@@ -38,15 +42,16 @@ router.get('/spotify', function(req, res) {
         }));
 });
 
-router.get('/youtube', function(req, res) {
+// ------------ youtube login redirect
+router.get('/youtube', function (req, res) {
 
-    var state = generateRandomString(16);
+    const state = generateRandomString(16);
     res.cookie(youtubeStateKey, state);
 
-    let scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/youtube';
-
-
-    // "https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=http://localhost:3000&client_id=934374130370-fbe30ifh366vjc1ut5t4j3i6a4i066m4.apps.googleusercontent.com&access_type=offline&response_type=code&prompt=consent&"
+    const scope =
+        'https://www.googleapis.com/auth/userinfo.profile ' +
+        'https://www.googleapis.com/auth/userinfo.email ' +
+        'https://www.googleapis.com/auth/youtube';
 
     res.redirect('https://accounts.google.com/o/oauth2/v2/auth?' +
         querystring.stringify({

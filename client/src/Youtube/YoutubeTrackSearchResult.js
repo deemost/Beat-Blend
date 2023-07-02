@@ -1,4 +1,6 @@
 import React from "react";
+import Card from "react-bootstrap/Card";
+import {Button} from "react-bootstrap";
 
 export default function YoutubeTrackSearchResult({ track, chooseTrack, addToQueue }) {
     function handlePlayForSong() {
@@ -7,21 +9,29 @@ export default function YoutubeTrackSearchResult({ track, chooseTrack, addToQueu
     }
 
     function handleQueue() {
-        // console.log( "JJJJJJJJ" + JSON.stringify(track));
+        console.log("--- yt: adding to queue " + JSON.stringify(track));
         addToQueue(track);
     }
 
     return (
-        <div
-            className="d-flex m-2 align-items-center"
-            style={{ cursor: "pointer" }}
-        >
-            <img onClick={handlePlayForSong} src={track.albumUrl} style={{ height: "64px", width: "64px" }} />
-            <div className="ml-3">
-                <div>{JSON.stringify(track)}</div>
-                {/*<div className="text-muted">{track.artist}</div>*/}
-                <button onClick={handleQueue} type="button" className="btn btn-primary btn-sm">Add To Queue</button>
-            </div>
+        <div>
+            <Card className="flex-row flex-wrap" style={{borderWidth: 0}}>
+                <Card.Header style={{backgroundColor: "white"}}>
+                    <Card.Img variant="top"
+                              onClick={handlePlayForSong}
+                              src={track.snippet.thumbnails.default.url}
+                              style={{height: "64px", width: "64px", cursor: "pointer"}}/>
+                </Card.Header>
+                <Card.Header style={{backgroundColor: "white"}}>
+                    <Card.Title className="small">{track.snippet.title}</Card.Title>
+                    {/*<Card.Subtitle className="small text-muted">{track.artist}</Card.Subtitle>*/}
+                    <Button variant="primary"
+                            onClick={handleQueue}
+                            style={{fontSize: 11}}
+                            size="sm">Add To Queue</Button>
+
+                </Card.Header>
+            </Card>
         </div>
     );
 }

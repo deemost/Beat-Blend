@@ -15,10 +15,9 @@ export default function MusicDashBoard() {
     const [whichService, setWhichService] = useState("");
     const [playingTrack, setPlayingTrack] = useState();
     const [queueResults, setQueueResults] = useState([]);
+    const [room, setRoom] = useState("");
 
     useEffect(() => {
-
-
         axios
             .get("http://localhost:3001/queue/playingtrack")
             .then((res) => {
@@ -43,10 +42,13 @@ export default function MusicDashBoard() {
                 setQueueResults(res.data.queueResults);
             });
 
+        axios
+            .get("http://localhost:3001/room")
+            .then((res) => {
+                setRoom(res.data.room);
+            });
 
         console.log("access token: " + spotifyAccessToken);
-
-
     }, []);
 
 
@@ -190,6 +192,7 @@ export default function MusicDashBoard() {
                                 </Nav.Item>
                             </Nav>
                         </Navbar.Collapse>
+                        <div>Room # {room}</div>
                     </Container>
                 </Navbar>
             </div>

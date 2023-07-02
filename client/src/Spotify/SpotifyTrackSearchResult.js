@@ -9,7 +9,7 @@ export default function SpotifyTrackSearchResult({track, chooseTrack, addToQueue
     }
 
     function handleQueue() {
-        // console.log( "JJJJJJJJ" + JSON.stringify(track));
+        console.log("--- spotify: adding to queue " + JSON.stringify(track));
         addToQueue(track);
     }
 

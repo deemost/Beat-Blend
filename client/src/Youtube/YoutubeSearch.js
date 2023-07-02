@@ -1,10 +1,7 @@
-import {useState, useEffect} from "react"
-// import SpotifyPlayer from "react-spotify-web-playback"
-import SpotifyWebApi from "spotify-web-api-node";
+import {useState} from "react"
 import {Form} from "react-bootstrap";
 import YoutubeTrackSearchResult from "./YoutubeTrackSearchResult";
 import axios from "axios";
-// import getQueue from "react-spotify-web-playback"
 
 
 export default function YoutubeSearch({youtubeAccessToken, chooseTrack, addToQueue}) {
@@ -15,19 +12,16 @@ export default function YoutubeSearch({youtubeAccessToken, chooseTrack, addToQue
 
 
     function doSearch(searchTerm) {
-
-
-
         axios
-            .get("http://localhost:3001/callback/youtube/search", {
+            .get("http://localhost:3001/search/youtube", {
                 params: {
                     searchTerm: searchTerm
                 }
             })
             .then((res) => {
-                setSearchResults(res.results);
+                // console.log('---- yt search results from server: ' + JSON.stringify(res))
+                setSearchResults(res.data);
             });
-
     }
 
     return (
@@ -43,11 +37,10 @@ export default function YoutubeSearch({youtubeAccessToken, chooseTrack, addToQue
                         doSearch(-1);
                     }
                 }
-                }
-            />
+                }/>
 
             {searchResults.map((track) => (
-                <div key={track.uri}>
+                <div key={track.id.videoId}>
                     <YoutubeTrackSearchResult
                         track={track}
                         chooseTrack={chooseTrack}

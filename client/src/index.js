@@ -2,11 +2,14 @@ import {createRoot} from 'react-dom/client';
 import React from "react"
 import {createBrowserRouter, Link, RouterProvider,} from "react-router-dom";
 import App from "./App";
+import Home from "./Home";
+import Guest, {loader as roomLoader} from "./Guest";
 
 const router = createBrowserRouter([
     {
-        path: "/guest",
-        element: <div>Join room:  (enter room number)</div>,
+        path: "/room/:id",
+        element: <Guest/>,
+        loader: roomLoader,
     },
     {
         path: "/host",
@@ -14,21 +17,18 @@ const router = createBrowserRouter([
     },
     {
         path: "/",
-        element: <div>
-            <Link to={`host`}>Host</Link>, OR <br/>
-            <Link to={`guest`}>Guest</Link><br/>
-        </div>,
+        element: <Home/>,
     },
 ]);
 
-// const container = document.getElementById('root');
-// const root = createRoot(container);
-// root.render(
-//     <React.StrictMode>
-//         <RouterProvider router={router}/>
-//     </React.StrictMode>
-// )
-
 const container = document.getElementById('root');
 const root = createRoot(container);
-root.render(<App />);
+root.render(
+    <React.StrictMode>
+        <RouterProvider router={router}/>
+    </React.StrictMode>
+)
+
+// const container = document.getElementById('root');
+// const root = createRoot(container);
+// root.render(<App />);

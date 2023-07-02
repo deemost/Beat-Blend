@@ -1,35 +1,34 @@
+const axios = require('axios')
+const express = require('express');
+const router = express.Router();
 
-import axios from "axios";
-var express = require('express');
-var router = express.Router();
+const callbackModule = require('./callback.js');
 
-var callbackModule = require('./callback.js');
+const key = process.env.YOUTUBE_API_KEY
 
-router.get("/youtube/search", function (req, res) {
-
-    let results = undefined;
+router.get("/youtube", function (req, res) {
 
     const config = {
-        headers:{
+        headers: {
             Authorization: 'Bearer ' + callbackModule.youtubeAccessToken,
-            Accept:  'application/json'
+            Accept: 'application/json'
         }
     };
 
-    // console.log("YYYYYYY: " + req.params.searchTerm);
-
     let encoded = encodeURIComponent(req.query.searchTerm);
+    console.log("========= encoded: " + encoded);
 
     axios
-        .get("https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=" + encoded +"&key=AIzaSyAfoqGxQyF5tOyjjNeAiK8CIQrOaLLn5cQ", config)
+        .get("https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=" +
+            encoded +
+            "&key=" +
+            key, config)
         .then((r) => {
-            results = (r.data.items);
+            let results = (r.data.items);
+            console.log('===== yt search results: ' + JSON.stringify(results))
+            res.json(results);
         });
-
-    res.json(results);
 });
-
-
 
 
 module.exports = router;

@@ -2,27 +2,12 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import MusicDashBoard from "./MusicDashBoard";
 import "./testing-background.css";
 
-// const spotifyAccessToken = new URLSearchParams(window.location.search).get("access_token");
-// const linkThing = new URLSearchParams(window.location);
-// let whichService;
-//
-// if (linkThing.toString().includes("google")) {
-//     whichService = "Youtube";
-// } else {
-//     whichService = "Spotify";
-// }
-
-
 function App() {
-    // return <OldDashboard code={spotifyAccessToken} whichService={whichService}/>
-    // return <SpotifyDashBoard code={spotifyAccessToken}/>
     return (
-
         <div className="header">
-        <MusicDashBoard />
+            <MusicDashBoard/>
         </div>
-
-            )
+    )
 }
 
 export default App
