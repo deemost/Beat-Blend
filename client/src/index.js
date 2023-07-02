@@ -1,6 +1,6 @@
 import {createRoot} from 'react-dom/client';
 import React from "react"
-import {createBrowserRouter, Link, RouterProvider,} from "react-router-dom";
+import {createBrowserRouter, RouterProvider,} from "react-router-dom";
 import App from "./App";
 import Home from "./Home";
 import Guest, {loader as roomLoader} from "./Guest";

@@ -49,7 +49,7 @@ export default function MusicDashBoard() {
             });
 
         console.log("access token: " + spotifyAccessToken);
-    }, []);
+    });
 
 
     function playNextInQueue() {
