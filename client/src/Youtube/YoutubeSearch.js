@@ -1,17 +1,16 @@
-import {useState} from "react"
-import {Form} from "react-bootstrap";
+import React, {useState} from "react"
+import {Button, Form} from "react-bootstrap";
 import YoutubeTrackSearchResult from "./YoutubeTrackSearchResult";
 import axios from "axios";
 
 
 export default function YoutubeSearch({youtubeAccessToken, chooseTrack, addToQueue}) {
 
-    const [search, setSearch] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState([]);
-    const youtubeSearchApi = require("youtube-search-api");
 
 
-    function doSearch(searchTerm) {
+    function doSearch() {
         axios
             .get("http://localhost:3001/search/youtube", {
                 params: {
@@ -26,18 +25,21 @@ export default function YoutubeSearch({youtubeAccessToken, chooseTrack, addToQue
 
     return (
         <div>
-            <Form.Control
-                type="text"
-                placeholder="YOUTUBE Search Songs/Artists"
-                onChange={(e) => {
-                    console.log("inside onChange...")
-                    if (e.target.value.length > 0) {
-                        doSearch(e.target.value);
-                    } else {
-                        doSearch(-1);
+
+            <Form>
+                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                    <Form.Control type="text" placeholder="YOUTUBE Search Songs/Artists" onChange={(e) => {
+                        console.log("inside onChange...")
+                        if (e.target.value.length > 0) {
+                            setSearchTerm(e.target.value);
+                        } else {
+                            setSearchTerm(undefined);
+                        }
                     }
-                }
-                }/>
+                    }/>
+                    <Button onClick={doSearch}>Go</Button>
+                </Form.Group>
+            </Form>
 
             {searchResults.map((track) => (
                 <div key={track.id.videoId}>
