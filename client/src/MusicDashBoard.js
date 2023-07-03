@@ -21,31 +21,31 @@ export default function MusicDashBoard() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:3001/queue/playingtrack")
+            .get( process.env.REACT_APP_URL_PREFIX + "/queue/playingtrack")
             .then((res) => {
                 setPlayingTrack(res.data.playingTrack);
             });
 
         axios
-            .get("http://localhost:3001/callback/spotify/access")
+            .get( process.env.REACT_APP_URL_PREFIX + "/callback/spotify/access")
             .then((res) => {
                 setSpotifyAccessToken(res.data.access_token);
             });
 
         axios
-            .get("http://localhost:3001/callback/youtube/access")
+            .get(process.env.REACT_APP_URL_PREFIX +  "/callback/youtube/access")
             .then((res) => {
                 setYoutubeAccessToken(res.data.access_token);
             });
 
         axios
-            .get("http://localhost:3001/queue")
+            .get(process.env.REACT_APP_URL_PREFIX +  "/queue")
             .then((res) => {
                 setQueueResults(res.data.queueResults);
             });
 
         axios
-            .get("http://localhost:3001/room")
+            .get(process.env.REACT_APP_URL_PREFIX +  "/room")
             .then((res) => {
                 setRoom(res.data.room);
             });
@@ -57,7 +57,7 @@ export default function MusicDashBoard() {
 
     function playNextInQueue() {
         axios
-            .get("http://localhost:3001/queue")
+            .get(process.env.REACT_APP_URL_PREFIX +  "/queue")
             .then((res) => {
                 setQueueResults(res.data.queueResults);
                 // console.log("QUEUE: " + res.data.queueResults.length)
@@ -68,7 +68,7 @@ export default function MusicDashBoard() {
         // let nextInQueue = queueResults[0];
 
         axios
-            .post("http://localhost:3001/queue/playingtrack", {
+            .post(process.env.REACT_APP_URL_PREFIX +  "/queue/playingtrack", {
                 track: (queueResults[0])
             })
             .then((res) => {
@@ -76,7 +76,7 @@ export default function MusicDashBoard() {
             });
 
         axios
-            .delete("http://localhost:3001/queue/specific")
+            .delete(process.env.REACT_APP_URL_PREFIX +  "/queue/specific")
             .then((res) => {
                 setQueueResults(res.data.queueResults);
             });
@@ -87,16 +87,16 @@ export default function MusicDashBoard() {
         setWhichService(str);
 
         if (str === "Spotify" && !spotifyAccessToken) {
-            window.location.replace('http://localhost:3001/login/spotify');
+            window.location.replace(process.env.REACT_APP_URL_PREFIX +  '/login/spotify');
         }
 
         if (str === "Youtube" && !youtubeAccessToken) {
-            window.location.replace('http://localhost:3001/login/youtube');
+            window.location.replace(process.env.REACT_APP_URL_PREFIX +  '/login/youtube');
         }
 
         if (str === "Logout") {
             axios
-                .post("http://localhost:3001/callback/spotify/access", {
+                .post(process.env.REACT_APP_URL_PREFIX +  "/callback/spotify/access", {
                     undefined
                 })
                 .then((res) => {
@@ -104,7 +104,7 @@ export default function MusicDashBoard() {
                 });
 
             axios
-                .post("http://localhost:3001/callback/youtube/access", {
+                .post( process.env.REACT_APP_URL_PREFIX + "/callback/youtube/access", {
                     undefined
                 })
                 .then((res) => {
@@ -119,7 +119,7 @@ export default function MusicDashBoard() {
         // setPlayingTrack(track);
 
         axios
-            .post("http://localhost:3001/queue/playingtrack", {
+            .post(process.env.REACT_APP_URL_PREFIX +  "/queue/playingtrack", {
                 track
             })
             .then((res) => {
@@ -129,7 +129,7 @@ export default function MusicDashBoard() {
 
     function addToQueue(track) {
         axios
-            .post("http://localhost:3001/queue", {
+            .post(process.env.REACT_APP_URL_PREFIX + "/queue", {
                 track
             })
             .then((res) => {
@@ -139,7 +139,7 @@ export default function MusicDashBoard() {
 
     function clearQueue() {
         axios
-            .delete("http://localhost:3001/queue/all")
+            .delete(process.env.REACT_APP_URL_PREFIX +  "/queue/all")
             .then((res) => {
                 setQueueResults(res.data.queueResults);
             });
@@ -149,7 +149,7 @@ export default function MusicDashBoard() {
     function deleteFromQueue(trackIndexInQueue) {
 
         axios
-            .delete("http://localhost:3001/queue/specific", {
+            .delete(process.env.REACT_APP_URL_PREFIX +  "/queue/specific", {
                 params: {
                     trackIndexInQueue: trackIndexInQueue,
                 },

@@ -2,11 +2,13 @@ import React from "react"
 import {Await, defer, useLoaderData} from "react-router-dom";
 import axios from "axios";
 
+require('dotenv').config();
+
 export async function loader({params}) {
     console.log('params: ' + JSON.stringify(params))
     let room = params.id
     const response = await axios
-        .post("http://localhost:3001/room/check", {
+        .post(process.env.REACT_APP_URL_PREFIX + "/room/check", {
             room
         });
 

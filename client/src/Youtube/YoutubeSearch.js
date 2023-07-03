@@ -12,7 +12,7 @@ export default function YoutubeSearch({youtubeAccessToken, chooseTrack, addToQue
 
     function doSearch() {
         axios
-            .get("http://localhost:3001/search/youtube", {
+            .get(process.env.REACT_APP_URL_PREFIX + "/search/youtube", {
                 params: {
                     searchTerm: searchTerm
                 }
