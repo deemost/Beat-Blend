@@ -6,6 +6,7 @@ import SpotifySearch from "./Spotify/SpotifySearch";
 import YoutubeSearch from "./Youtube/YoutubeSearch";
 import Queue from "./Queue";
 import Nav from 'react-bootstrap/Nav';
+import CustomYoutubePlayer from "./Youtube/CustomYoutubePlayer";
 
 
 export default function MusicDashBoard() {
@@ -18,34 +19,33 @@ export default function MusicDashBoard() {
     const [room, setRoom] = useState("");
 
 
-
     useEffect(() => {
         axios
-            .get( process.env.REACT_APP_URL_PREFIX + "/queue/playingtrack")
+            .get(process.env.REACT_APP_URL_PREFIX + "/queue/playingtrack")
             .then((res) => {
                 setPlayingTrack(res.data.playingTrack);
             });
 
         axios
-            .get( process.env.REACT_APP_URL_PREFIX + "/callback/spotify/access")
+            .get(process.env.REACT_APP_URL_PREFIX + "/callback/spotify/access")
             .then((res) => {
                 setSpotifyAccessToken(res.data.access_token);
             });
 
         axios
-            .get(process.env.REACT_APP_URL_PREFIX +  "/callback/youtube/access")
+            .get(process.env.REACT_APP_URL_PREFIX + "/callback/youtube/access")
             .then((res) => {
                 setYoutubeAccessToken(res.data.access_token);
             });
 
         axios
-            .get(process.env.REACT_APP_URL_PREFIX +  "/queue")
+            .get(process.env.REACT_APP_URL_PREFIX + "/queue")
             .then((res) => {
                 setQueueResults(res.data.queueResults);
             });
 
         axios
-            .get(process.env.REACT_APP_URL_PREFIX +  "/room")
+            .get(process.env.REACT_APP_URL_PREFIX + "/room")
             .then((res) => {
                 setRoom(res.data.room);
             });
@@ -57,7 +57,7 @@ export default function MusicDashBoard() {
 
     function playNextInQueue() {
         axios
-            .get(process.env.REACT_APP_URL_PREFIX +  "/queue")
+            .get(process.env.REACT_APP_URL_PREFIX + "/queue")
             .then((res) => {
                 setQueueResults(res.data.queueResults);
                 // console.log("QUEUE: " + res.data.queueResults.length)
@@ -68,7 +68,7 @@ export default function MusicDashBoard() {
         // let nextInQueue = queueResults[0];
 
         axios
-            .post(process.env.REACT_APP_URL_PREFIX +  "/queue/playingtrack", {
+            .post(process.env.REACT_APP_URL_PREFIX + "/queue/playingtrack", {
                 track: (queueResults[0])
             })
             .then((res) => {
@@ -76,7 +76,7 @@ export default function MusicDashBoard() {
             });
 
         axios
-            .delete(process.env.REACT_APP_URL_PREFIX +  "/queue/specific")
+            .delete(process.env.REACT_APP_URL_PREFIX + "/queue/specific")
             .then((res) => {
                 setQueueResults(res.data.queueResults);
             });
@@ -87,16 +87,16 @@ export default function MusicDashBoard() {
         setWhichService(str);
 
         if (str === "Spotify" && !spotifyAccessToken) {
-            window.location.replace(process.env.REACT_APP_URL_PREFIX +  '/login/spotify');
+            window.location.replace(process.env.REACT_APP_URL_PREFIX + '/login/spotify');
         }
 
         if (str === "Youtube" && !youtubeAccessToken) {
-            window.location.replace(process.env.REACT_APP_URL_PREFIX +  '/login/youtube');
+            window.location.replace(process.env.REACT_APP_URL_PREFIX + '/login/youtube');
         }
 
         if (str === "Logout") {
             axios
-                .post(process.env.REACT_APP_URL_PREFIX +  "/callback/spotify/access", {
+                .post(process.env.REACT_APP_URL_PREFIX + "/callback/spotify/access", {
                     undefined
                 })
                 .then((res) => {
@@ -104,7 +104,7 @@ export default function MusicDashBoard() {
                 });
 
             axios
-                .post( process.env.REACT_APP_URL_PREFIX + "/callback/youtube/access", {
+                .post(process.env.REACT_APP_URL_PREFIX + "/callback/youtube/access", {
                     undefined
                 })
                 .then((res) => {
@@ -118,13 +118,16 @@ export default function MusicDashBoard() {
 
         // setPlayingTrack(track);
 
+
         axios
-            .post(process.env.REACT_APP_URL_PREFIX +  "/queue/playingtrack", {
+            .post(process.env.REACT_APP_URL_PREFIX + "/queue/playingtrack", {
                 track
             })
             .then((res) => {
                 setPlayingTrack(res.data.playingTrack);
             });
+
+        console.log("PLAYING TRACK: " + JSON.stringify(track));
     }
 
     function addToQueue(track) {
@@ -139,7 +142,7 @@ export default function MusicDashBoard() {
 
     function clearQueue() {
         axios
-            .delete(process.env.REACT_APP_URL_PREFIX +  "/queue/all")
+            .delete(process.env.REACT_APP_URL_PREFIX + "/queue/all")
             .then((res) => {
                 setQueueResults(res.data.queueResults);
             });
@@ -149,7 +152,7 @@ export default function MusicDashBoard() {
     function deleteFromQueue(trackIndexInQueue) {
 
         axios
-            .delete(process.env.REACT_APP_URL_PREFIX +  "/queue/specific", {
+            .delete(process.env.REACT_APP_URL_PREFIX + "/queue/specific", {
                 params: {
                     trackIndexInQueue: trackIndexInQueue,
                 },
@@ -242,11 +245,16 @@ export default function MusicDashBoard() {
 
                         </Container>
                         <Container>
-                            <CustomSpotifyPlayer
+
+                            {playingTrack?.uri ? (<CustomSpotifyPlayer
                                 accessToken={spotifyAccessToken}
                                 trackUri={playingTrack?.uri}
                                 playNextInTheQueue={playNextInQueue}
-                            />
+                            />)
+
+                                : (<CustomYoutubePlayer playNextInTheQueue={playNextInQueue}
+                                                        videoId={playingTrack?.id.videoId}/>)}
+
 
                         </Container>
                     </Container>
