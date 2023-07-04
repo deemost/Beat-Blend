@@ -26,3 +26,21 @@ In `/server/.env` file, specify `FINAL_RESPONSE_URI=http://localhost:3000` as we
 2. `cd spotify-clone`
 3. `heroku git:remote -a beatblend` (this is a one-time command to create the Heroku remote)
 4. `git subtree push --prefix server heroku main`
+5. One time setup (or if new variable are added or updated): populate the env variables:
+
+```
+BACKEND_URL_PREFIX=https://beatblend-99678c772fcd.herokuapp.com
+FRONTEND_URL_PREFIX=https://beat-blend.netlify.app
+
+SPOTIFY_REDIRECT_URI=/callback/spotify
+SPOTIFY_CLIENT_ID=<copy_from_spotify_app>
+SPOTIFY_CLIENT_SECRET=<copy_from_spotify_app>
+
+YOUTUBE_REDIRECT_URI=/callback/youtube
+YOUTUBE_CLIENT_ID=<copy_from_youtube_app>
+YOUTUBE_CLIENT_SECRET=<copy_from_youtube_app>
+YOUTUBE_API_KEY=<copy_from_youtube_app>
+
+FINAL_RESPONSE_URI=/host
+```
+using `heroku config:set VAR=value`
