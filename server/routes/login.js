@@ -37,7 +37,7 @@ router.get('/spotify', function (req, res) {
             response_type: 'code',
             client_id: process.env.SPOTIFY_CLIENT_ID,
             scope: scope,
-            redirect_uri: process.env.SPOTIFY_REDIRECT_URI,
+            redirect_uri: process.env.BACKEND_URL_PREFIX + process.env.SPOTIFY_REDIRECT_URI,
             state: state
         }));
 });
@@ -55,7 +55,7 @@ router.get('/youtube', function (req, res) {
 
     res.redirect('https://accounts.google.com/o/oauth2/v2/auth?' +
         querystring.stringify({
-            redirect_uri: process.env.YOUTUBE_REDIRECT_URI,
+            redirect_uri: process.env.BACKEND_URL_PREFIX + process.env.YOUTUBE_REDIRECT_URI,
             client_id: process.env.YOUTUBE_CLIENT_ID,
             access_type: 'offline',
             response_type: 'code',

@@ -30,7 +30,7 @@ router.get('/spotify', function (req, res, next) {
         url: 'https://accounts.spotify.com/api/token',
         form: {
             code: code,
-            redirect_uri: process.env.SPOTIFY_REDIRECT_URI,
+            redirect_uri: process.env.BACKEND_URL_PREFIX + process.env.SPOTIFY_REDIRECT_URI,
             grant_type: 'authorization_code'
         },
         headers: {
@@ -61,7 +61,7 @@ router.get('/spotify', function (req, res, next) {
             spotify_access_token = body.access_token;
             const refresh_token = body.refresh_token;
 
-            res.redirect(process.env.FINAL_RESPONSE_URI);
+            res.redirect(process.env.FRONTEND_URL_PREFIX + process.env.FINAL_RESPONSE_URI);
 
         } else {
             // or error
@@ -96,7 +96,7 @@ router.get('/youtube', function (req, res, next) {
         url: 'https://oauth2.googleapis.com/token',
         form: {
             code: code,
-            redirect_uri: process.env.YOUTUBE_REDIRECT_URI,
+            redirect_uri: process.env.BACKEND_URL_PREFIX + process.env.YOUTUBE_REDIRECT_URI,
             grant_type: 'authorization_code'
         },
         headers: {
@@ -126,7 +126,7 @@ router.get('/youtube', function (req, res, next) {
             youtube_access_token = body.access_token;
             const refresh_token = body.refresh_token;
 
-            res.redirect(process.env.FINAL_RESPONSE_URI);
+            res.redirect(process.env.FRONTEND_URL_PREFIX + process.env.FINAL_RESPONSE_URI);
 
         } else {
             // or error
