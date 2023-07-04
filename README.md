@@ -18,7 +18,7 @@ https://developer.spotify.com/documentation/web-api
 5. record client id and client secret in `/server/.env` file
 
 ### Other Settings
-In `/server/.env` file, specify `FINAL_RESPONSE_URI=http://localhost:3000` 
+In `/server/.env` file, specify `FINAL_RESPONSE_URI=http://localhost:3000` as well as all service client ids, secrets, and keys 
 
 
 ### Heroku

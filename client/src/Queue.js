@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import SpotifyQueueTrack from "./Spotify/SpotifyQueueTrack";
+import QueueTrack from "./QueueTrack";
 import {Button} from "react-bootstrap";
 
 export default function Queue({newQueueResults, clearQ, deleteFromQueue}) {
@@ -21,11 +21,18 @@ export default function Queue({newQueueResults, clearQ, deleteFromQueue}) {
                     size="lg">Clear Queue</Button>
 
             {queueResults.map((track) => (
+
+
+
                 <div key={track.uri}>
-                    <SpotifyQueueTrack track={track}
-                                       deleteFromQueue={deleteFromQueue}
-                                       trackIndexInQueue={newQueueResults.indexOf(track)}/>
+                    <QueueTrack track={track}
+                                deleteFromQueue={deleteFromQueue}
+                                trackIndexInQueue={newQueueResults.indexOf(track)}/>
                 </div>
+
+
+
+
             ))
             }
         </div>

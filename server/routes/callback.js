@@ -61,11 +61,7 @@ router.get('/spotify', function (req, res, next) {
             spotify_access_token = body.access_token;
             const refresh_token = body.refresh_token;
 
-            res.redirect(process.env.FINAL_RESPONSE_URI + '?' +
-                querystring.stringify({
-                    access_token: spotify_access_token,
-                    refresh_token: refresh_token
-                }));
+            res.redirect(process.env.FINAL_RESPONSE_URI);
 
         } else {
             // or error
@@ -130,11 +126,7 @@ router.get('/youtube', function (req, res, next) {
             youtube_access_token = body.access_token;
             const refresh_token = body.refresh_token;
 
-            res.redirect(process.env.FINAL_RESPONSE_URI + '?' +
-                querystring.stringify({
-                    access_token: youtube_access_token,
-                    refresh_token: refresh_token
-                }));
+            res.redirect(process.env.FINAL_RESPONSE_URI);
 
         } else {
             // or error

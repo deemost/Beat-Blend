@@ -10,7 +10,11 @@ export default function YoutubeSearch({youtubeAccessToken, chooseTrack, addToQue
     const [searchResults, setSearchResults] = useState([]);
 
 
-    function doSearch() {
+    function doSearch(event) {
+
+        event.preventDefault();
+
+
         axios
             .get(process.env.REACT_APP_URL_PREFIX + "/search/youtube", {
                 params: {
@@ -26,7 +30,7 @@ export default function YoutubeSearch({youtubeAccessToken, chooseTrack, addToQue
     return (
         <div>
 
-            <Form>
+            <Form onSubmit={doSearch}>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Control type="text" placeholder="YOUTUBE Search Songs/Artists" onChange={(e) => {
                         console.log("inside onChange...")
@@ -37,7 +41,7 @@ export default function YoutubeSearch({youtubeAccessToken, chooseTrack, addToQue
                         }
                     }
                     }/>
-                    <Button onClick={doSearch}>Go</Button>
+                    {/*<Button onClick={doSearch}>Go</Button>*/}
                 </Form.Group>
             </Form>
 
