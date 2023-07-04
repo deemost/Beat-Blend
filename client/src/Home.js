@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from "react"
+import React, {useState} from "react"
 import {Link, useNavigate} from "react-router-dom";
 import {Button, Col, Container, Form, Row} from "react-bootstrap";
-import axios from "axios";
 
 export default function Home() {
 
