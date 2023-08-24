@@ -20,7 +20,6 @@ const app = express();
 app.set('port', (process.env.PORT || 3001))
 
 /* App setup */
-// TEST
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));

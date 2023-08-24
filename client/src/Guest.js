@@ -1,6 +1,8 @@
 import React from "react"
 import {Await, defer, useLoaderData} from "react-router-dom";
 import axios from "axios";
+import "./Guest-Background.css";
+import GuestView from "./GuestView";
 
 require('dotenv').config();
 
@@ -29,7 +31,9 @@ export default function Guest() {
                     return (
                         <div>
                             {roomCheck.exists &&
-                                <div>welcome to the room</div>
+                                <div className="header2">
+                                <GuestView></GuestView>
+                                </div>
                             }
                             {!roomCheck.exists &&
                                 <div>Room does not exist</div>

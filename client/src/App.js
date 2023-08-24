@@ -1,11 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css"
-import MusicDashBoard from "./MusicDashBoard";
-import "./testing-background.css";
+import "./Host-Background.css";
+import HostView from "./HostView";
+
 
 function App() {
     return (
-        <div className="header">
-            <MusicDashBoard/>
+        <div className="header1">
+            <HostView/>
         </div>
     )
 }

@@ -92,6 +92,7 @@ router.get('/youtube', function (req, res, next) {
     const code = req.query.code || null;
     const state = req.query.state || null;
     const storedState = req.cookies ? req.cookies[youtubeStateKey] : null;
+    console.log("TEST: " + storedState);
     const authOptions = {
         url: 'https://oauth2.googleapis.com/token',
         form: {

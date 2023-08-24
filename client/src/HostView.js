@@ -9,7 +9,7 @@ import Nav from 'react-bootstrap/Nav';
 import CustomYoutubePlayer from "./Youtube/CustomYoutubePlayer";
 
 
-export default function MusicDashBoard() {
+export default function HostView() {
 
     const [spotifyAccessToken, setSpotifyAccessToken] = useState("");
     const [youtubeAccessToken, setYoutubeAccessToken] = useState("");
