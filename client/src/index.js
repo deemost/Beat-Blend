@@ -3,17 +3,18 @@ import React from "react"
 import {createBrowserRouter, RouterProvider,} from "react-router-dom";
 import App from "./App";
 import Home from "./Home";
-import Guest, {loader as roomLoader} from "./Guest";
+import {loader as roomLoader} from "./Guest";
+import ViewSelector from "./ViewSelector";
 
 const router = createBrowserRouter([
     {
         path: "/room/:id",
-        element: <Guest/>,
+        element: <ViewSelector whichView = "Guest"/>,
         loader: roomLoader,
     },
     {
         path: "/host",
-        element: <App />,
+        element: <ViewSelector whichView = "Host"/>,
     },
     {
         path: "/",

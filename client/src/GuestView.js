@@ -224,19 +224,19 @@ export default function GuestView() {
 
 
                         </Container>
-                        <Container>
+                        {/*<Container>*/}
 
-                            {playingTrack?.uri ? (<CustomSpotifyPlayer
-                                    accessToken={spotifyAccessToken}
-                                    trackUri={playingTrack?.uri}
-                                    playNextInTheQueue={playNextInQueue}
-                                />)
+                        {/*    {playingTrack?.uri ? (<CustomSpotifyPlayer*/}
+                        {/*            accessToken={spotifyAccessToken}*/}
+                        {/*            trackUri={playingTrack?.uri}*/}
+                        {/*            playNextInTheQueue={playNextInQueue}*/}
+                        {/*        />)*/}
 
-                                : (<CustomYoutubePlayer playNextInTheQueue={playNextInQueue}
-                                                        videoId={playingTrack?.id.videoId}/>)}
+                        {/*        : (<CustomYoutubePlayer playNextInTheQueue={playNextInQueue}*/}
+                        {/*                                videoId={playingTrack?.id.videoId}/>)}*/}
 
 
-                        </Container>
+                        {/*</Container>*/}
                     </Container>
                 </div>
 
