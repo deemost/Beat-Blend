@@ -9,7 +9,7 @@ import Nav from 'react-bootstrap/Nav';
 import CustomYoutubePlayer from "./Youtube/CustomYoutubePlayer";
 
 
-export default function HostView() {
+export default function HostView( {count, handleClick} ) {
 
     const [spotifyAccessToken, setSpotifyAccessToken] = useState("");
     const [youtubeAccessToken, setYoutubeAccessToken] = useState("");
@@ -92,6 +92,10 @@ export default function HostView() {
 
         if (str === "Youtube" && !youtubeAccessToken) {
             window.location.replace(process.env.REACT_APP_URL_PREFIX + '/login/youtube');
+        }
+
+        if (str === "TEST") {
+            handleClick();
         }
 
         if (str === "Logout") {
@@ -196,6 +200,13 @@ export default function HostView() {
                                               className='btn btn-light btn-sm'
                                               style={{color: 'black'}}>Logout</Nav.Link>
                                 </Nav.Item>
+                                <div>&nbsp;</div>
+                                <Nav.Item>
+                                    <Nav.Link onClick={handleButtonsClick("TEST")}
+                                              className='btn btn-danger btn-sm'
+                                              style={{color: 'white'}}>TEST</Nav.Link>
+                                </Nav.Item>
+                                <div>{JSON.stringify(count)}</div>
                             </Nav>
                         </Navbar.Collapse>
                         <div>Room # {room}</div>

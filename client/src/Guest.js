@@ -21,7 +21,7 @@ export async function loader({params}) {
     });
 }
 
-export default function Guest() {
+export default function Guest({count}) {
     const {roomCheck} = useLoaderData();
 
     return (
@@ -32,7 +32,7 @@ export default function Guest() {
                         <div>
                             {roomCheck.exists &&
                                 <div className="header2">
-                                <GuestView></GuestView>
+                                <GuestView count={count} ></GuestView>
                                 </div>
                             }
                             {!roomCheck.exists &&

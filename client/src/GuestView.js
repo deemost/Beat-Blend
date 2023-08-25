@@ -9,7 +9,7 @@ import Nav from 'react-bootstrap/Nav';
 import CustomYoutubePlayer from "./Youtube/CustomYoutubePlayer";
 
 
-export default function GuestView() {
+export default function GuestView( {count} ) {
 
     const [spotifyAccessToken, setSpotifyAccessToken] = useState("");
     const [youtubeAccessToken, setYoutubeAccessToken] = useState("");
@@ -172,6 +172,7 @@ export default function GuestView() {
                                               className='btn btn-info btn-sm'
                                               style={{color: 'white'}}>Apple Music</Nav.Link>
                                 </Nav.Item>
+                                <div>{JSON.stringify(count)}</div>
                             </Nav>
                         </Navbar.Collapse>
                         <div>Room # {room}</div>
