@@ -18,6 +18,25 @@ export default function Home() {
         setRoom(e.target.value)
     };
 
+
+
+    /* WebSocket Attempt */
+
+    const ws = new WebSocket("ws://localhost:8082");
+
+    ws.addEventListener("open", () => {
+        console.log("We are connected!");
+    });
+
+    ws.addEventListener("message", () => {
+        console.log("Heard you server!");
+        ws.send("YO");
+    });
+
+
+
+
+
     return (
         <div>
             <Container>
