@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from "react";
-import CustomSpotifyPlayer from "./Spotify/CustomSpotifyPlayer";
 import axios from "axios";
 import {Container, Navbar} from "react-bootstrap";
 import SpotifySearch from "./Spotify/SpotifySearch";
 import YoutubeSearch from "./Youtube/YoutubeSearch";
 import Queue from "./Queue";
 import Nav from 'react-bootstrap/Nav';
-import CustomYoutubePlayer from "./Youtube/CustomYoutubePlayer";
 
 
 export default function GuestView( {count} ) {
@@ -14,17 +12,12 @@ export default function GuestView( {count} ) {
     const [spotifyAccessToken, setSpotifyAccessToken] = useState("");
     const [youtubeAccessToken, setYoutubeAccessToken] = useState("");
     const [whichService, setWhichService] = useState("");
-    const [playingTrack, setPlayingTrack] = useState();
+    // const [playingTrack, setPlayingTrack] = useState();
     const [queueResults, setQueueResults] = useState([]);
     const [room, setRoom] = useState("");
 
 
     useEffect(() => {
-        axios
-            .get(process.env.REACT_APP_URL_PREFIX + "/queue/playingtrack")
-            .then((res) => {
-                setPlayingTrack(res.data.playingTrack);
-            });
 
         axios
             .get(process.env.REACT_APP_URL_PREFIX + "/callback/spotify/access")
@@ -73,40 +66,6 @@ export default function GuestView( {count} ) {
 
 
 
-
-
-
-
-
-
-    function playNextInQueue() {
-        axios
-            .get(process.env.REACT_APP_URL_PREFIX + "/queue")
-            .then((res) => {
-                setQueueResults(res.data.queueResults);
-                // console.log("QUEUE: " + res.data.queueResults.length)
-            });
-
-        console.log("QUEUE: " + queueResults.length);
-
-        // let nextInQueue = queueResults[0];
-
-        axios
-            .post(process.env.REACT_APP_URL_PREFIX + "/queue/playingtrack", {
-                track: (queueResults[0])
-            })
-            .then((res) => {
-                setPlayingTrack(res.data.playingTrack);
-            });
-
-        axios
-            .delete(process.env.REACT_APP_URL_PREFIX + "/queue/specific")
-            .then((res) => {
-                setQueueResults(res.data.queueResults);
-            });
-    }
-
-
     const handleButtonsClick = (str) => () => {
         setWhichService(str);
 
@@ -122,16 +81,14 @@ export default function GuestView( {count} ) {
 
     function chooseTrack(track) {
 
-        // setPlayingTrack(track);
-
 
         axios
             .post(process.env.REACT_APP_URL_PREFIX + "/queue/playingtrack", {
                 track
             })
-            .then((res) => {
-                setPlayingTrack(res.data.playingTrack);
-            });
+            // .then((res) => {
+            //     setPlayingTrack(res.data.playingTrack);
+            // });
 
         console.log("PLAYING TRACK: " + JSON.stringify(track));
     }

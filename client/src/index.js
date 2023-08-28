@@ -1,7 +1,6 @@
 import {createRoot} from 'react-dom/client';
 import React from "react"
 import {createBrowserRouter, RouterProvider,} from "react-router-dom";
-import App from "./App";
 import Home from "./Home";
 import {loader as roomLoader} from "./Guest";
 import ViewSelector from "./ViewSelector";
