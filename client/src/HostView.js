@@ -19,6 +19,23 @@ export default function HostView( {count, handleClick} ) {
     const [room, setRoom] = useState("");
 
 
+
+    const ws = new WebSocket("ws://localhost:8082/");
+
+    ws.addEventListener("message", (m) => {
+
+        if(JSON.stringify(m) === "bark"){
+            console.log("bark");
+        }
+
+        else{
+            console.log("Heard you server!: " + JSON.stringify(m));
+            // ws.send("YO");
+        }
+    });
+
+
+
     useEffect(() => {
         axios
             .get(process.env.REACT_APP_URL_PREFIX + "/queue/playingtrack")

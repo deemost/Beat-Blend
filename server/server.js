@@ -1,8 +1,11 @@
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const http = require("http");
 const express = require('express');
+const app = express();
 const logger = require('morgan');
-const WebSocket = require("ws");
+const {WebSocketServer} = require("ws");
+const clients = [];
 require('dotenv').config();
 
 /* Import Routes */
@@ -13,13 +16,18 @@ const queue = require('./routes/queue');
 const search = require('./routes/search');
 const room = require('./routes/room');
 
+// const myWebSocketRoute = require("./routes/queue");
+
 const cors = require('cors');
-const {WebSocketServer} = require("ws");
+
 
 
 /* Instantiate the App */
-const app = express();
-app.set('port', (process.env.PORT || 3001))
+
+app.set('port', (process.env.PORT || 3001));
+
+
+
 
 /* App setup */
 app.use(logger('dev'));
@@ -28,6 +36,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(__dirname + '/public'));
 app.use(cors());
+// myWebSocketRoute(server);
+
 
 
 /* Routes setup */
@@ -37,69 +47,57 @@ app.use('/refresh', refresh);
 app.use('/queue', queue);
 app.use('/search', search);
 app.use('/room', room);
+app.use("/websockets/queue", require("./routes/queue"));
+
+// app.use('/wsqueue', myWebSocketRoute)
+
+const server = http.createServer(app);
 
 
 app.listen(app.get('port'), function () {
     console.log("Server is running on:" + app.get('port'))
-})
+});
+server.listen(8082, () => {
+    console.log(`Server is running on port 8082`);
+});
 
 
 /* WebSockets Attempt */
 
+const wss = new WebSocketServer({server});
 
-
-
-
-const clients = [];
-const wss = new WebSocketServer({port: 8082});
+// app.use(function (req, res, next) {
+//     req.wss = wss;
+//     req.clients = clients;
+//     return next();
+// });
 
 wss.on("connection", (client) => {
-    console.log("New client connected!");
 
-    // client.send("Test Message");
+    // app.locals.clients = wss.clients;
+
+    console.log("New client connected!");
+    client.send("hello?");
 
     clients.push(client);
 
 
-    clients.forEach((c)=>{
-        console.log("haleluhah!!");
-        c.send("ITS RAINING MEN");
-    })
 
+    // clients.forEach((c)=>{
+    //     console.log("haleluhah!!");
+    //     c.send("ITS RAINING MEN");
+    // });
 
-    // client.send("ARE YOU ALL GETTING THIS??");
+    client.on("close", () =>{
+        console.log("Client Gone");
+        const index = clients.indexOf(client);
+        clients.splice(index, 1);
+        clients.forEach((c)=>{
+            console.log("still here!!");
+        });
+    });
+
+    app.locals.clients = clients;
+
 });
 
-
-
-
-
-
-
-// class Clients {
-//     constructor() {
-//         this.clientList = {};
-//         this.saveClient = this.saveClient.bind(this);
-//     }
-//     saveClient(username, client) {
-//         this.clientList[username] = client;
-//     }
-// }
-//
-//
-//
-// const clients = new Clients();
-// const wss = new WebSocketServer({port: 8082});
-//
-// wss.on("connection", (client) => {
-//     console.log("New client connected!");
-//
-//     client.send("Test Message");
-//
-//     client.on("message", (msg) => {
-//         const parsedMsg = JSON.stringify(msg);
-//         clients.saveClient(parsedMsg.data, client);
-//
-//         console.log("List Test: " +  JSON.stringify(clients.clientList));
-//     });
-// });

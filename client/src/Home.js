@@ -28,9 +28,10 @@ export default function Home() {
         console.log("We are connected!");
     });
 
-    ws.addEventListener("message", () => {
-        console.log("Heard you server!");
-        ws.send("YO");
+    ws.addEventListener("message", (m) => {
+
+        // if(JSON.stringify(m))
+        console.log(m.data);
     });
 
 

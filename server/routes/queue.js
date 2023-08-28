@@ -1,8 +1,20 @@
 const express = require('express');
+const {WebSocketServer} = require("ws");
 const router = express.Router();
+// const wss = new WebSocketServer({path: "../server"});
 
 let queueResults = [];
 let playingTrack;
+
+
+/* WebSockets Attempt */
+
+const broadcast = (clients, message) => {
+
+    clients.forEach((client) => {
+            client.send(message);
+    });
+};
 
 
 // ------------ queue
@@ -11,6 +23,45 @@ router.post("/playingtrack", function (req, res) {
     playingTrack = req.body.track;
     res.json({playingTrack})
     console.log(playingTrack);
+
+
+    broadcast(req.app.locals.clients, "Bark!");
+
+
+
+    // let wss = req.wss
+    //
+    // wss.on('connection', (ws) => {
+    //     ws.on('message',  (message) => {
+    //         console.log('received: %s', message);
+    //     });
+    // });
+
+
+    // let clients = req.clients;
+    //
+    // console.log("CLIENT COUNT AFTER PLAYING TRACK POST:" + JSON.stringify(clients));
+    //
+    // clients.forEach((c)=>{
+    //     console.log("QUEUE IS SEEING THIS");
+    //     // c.send("ITS RAINING MEN");
+    // });
+
+
+
+    // module.exports = (server, clients) => {
+    //     // const wss = new WebSocketServer({ server });
+    //
+    //     console.log("CLIENT COUNT: " + clients.length);
+    //
+    //     clients.forEach((c)=>{
+    //         console.log("QUEUE IS SEEING THIS");
+    //         // c.send("ITS RAINING MEN");
+    //     });
+    // };
+
+
+
 });
 
 router.get("/playingtrack", function (req, res) {
