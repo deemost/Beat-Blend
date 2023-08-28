@@ -20,16 +20,29 @@ export default function HostView( {count, handleClick} ) {
 
 
 
+    function testJSON(text) {
+        try {
+            JSON.parse(text);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
     const ws = new WebSocket("ws://localhost:8082/");
 
     ws.addEventListener("message", (m) => {
 
-        if(JSON.stringify(m) === "bark"){
+        if(m.data === "bark"){
             console.log("bark");
         }
 
+        if(  m.data.includes("update playing track") && testJSON(m.data.substring(m.data.indexOf(":") + 1)) ){
+            setPlayingTrack(JSON.parse(   m.data.substring(m.data.indexOf(":") + 1)  ));
+        }
+
         else{
-            console.log("Heard you server!: " + JSON.stringify(m));
+            console.log("Heard you server!: " + m.data);
             // ws.send("YO");
         }
     });

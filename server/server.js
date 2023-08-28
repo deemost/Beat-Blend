@@ -47,9 +47,6 @@ app.use('/refresh', refresh);
 app.use('/queue', queue);
 app.use('/search', search);
 app.use('/room', room);
-app.use("/websockets/queue", require("./routes/queue"));
-
-// app.use('/wsqueue', myWebSocketRoute)
 
 const server = http.createServer(app);
 
@@ -66,11 +63,6 @@ server.listen(8082, () => {
 
 const wss = new WebSocketServer({server});
 
-// app.use(function (req, res, next) {
-//     req.wss = wss;
-//     req.clients = clients;
-//     return next();
-// });
 
 wss.on("connection", (client) => {
 
@@ -81,12 +73,6 @@ wss.on("connection", (client) => {
 
     clients.push(client);
 
-
-
-    // clients.forEach((c)=>{
-    //     console.log("haleluhah!!");
-    //     c.send("ITS RAINING MEN");
-    // });
 
     client.on("close", () =>{
         console.log("Client Gone");

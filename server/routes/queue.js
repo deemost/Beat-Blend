@@ -25,42 +25,10 @@ router.post("/playingtrack", function (req, res) {
     console.log(playingTrack);
 
 
-    broadcast(req.app.locals.clients, "Bark!");
+    // let trackPackage = ["update playing track: ", playingTrack];
+    // broadcast(req.app.locals.clients, trackPackage);
 
-
-
-    // let wss = req.wss
-    //
-    // wss.on('connection', (ws) => {
-    //     ws.on('message',  (message) => {
-    //         console.log('received: %s', message);
-    //     });
-    // });
-
-
-    // let clients = req.clients;
-    //
-    // console.log("CLIENT COUNT AFTER PLAYING TRACK POST:" + JSON.stringify(clients));
-    //
-    // clients.forEach((c)=>{
-    //     console.log("QUEUE IS SEEING THIS");
-    //     // c.send("ITS RAINING MEN");
-    // });
-
-
-
-    // module.exports = (server, clients) => {
-    //     // const wss = new WebSocketServer({ server });
-    //
-    //     console.log("CLIENT COUNT: " + clients.length);
-    //
-    //     clients.forEach((c)=>{
-    //         console.log("QUEUE IS SEEING THIS");
-    //         // c.send("ITS RAINING MEN");
-    //     });
-    // };
-
-
+    broadcast(req.app.locals.clients, "update playing track: " + JSON.stringify(playingTrack));
 
 });
 
