@@ -29,7 +29,7 @@ In `/server/.env` file, specify `FINAL_RESPONSE_URI=http://localhost:3000` as we
 5. One time setup (or if new variable are added or updated): populate the env variables:
 
 ```
-BACKEND_URL_PREFIX=https://beatblend-99678c772fcd.herokuapp.com
+BACKEND_URL_PREFIX=https://beatblend-898262b11887.herokuapp.com/
 FRONTEND_URL_PREFIX=https://beat-blend.netlify.app
 
 SPOTIFY_REDIRECT_URI=/callback/spotify
