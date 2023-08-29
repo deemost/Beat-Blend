@@ -23,7 +23,7 @@ In `/server/.env` file, specify `FINAL_RESPONSE_URI=http://localhost:3000` as we
 
 ### Heroku
 1. `heroku login`
-2. `cd spotify-clone`
+2. `cd Beat-Blend`
 3. `heroku git:remote -a beatblend` (this is a one-time command to create the Heroku remote)
 4. `git subtree push --prefix server heroku main`
 5. One time setup (or if new variable are added or updated): populate the env variables:

@@ -3,6 +3,8 @@ const cookieParser = require('cookie-parser');
 const http = require("http");
 const express = require('express');
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 const logger = require('morgan');
 const {WebSocketServer} = require("ws");
 const clients = [];
