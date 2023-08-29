@@ -1,5 +1,5 @@
 [build.environment]
-REACT_APP_URL_PREFIX="https://beatblend-898262b11887.herokuapp.com/"
+REACT_APP_URL_PREFIX="https://beatblend-898262b11887.herokuapp.com"
 
 [[redirects]]
 from = "/*"
