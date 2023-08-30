@@ -24,6 +24,7 @@
     "querystring": "^0.2.0",
     "request": "^2.88.0",
     "serve-favicon": "~2.4.5",
+    "socket.io": "^4.7.2",
     "spotify-web-api-node": "^5.0.2",
     "ws": "^8.13.0"
   },

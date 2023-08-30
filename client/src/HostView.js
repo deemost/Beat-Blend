@@ -7,6 +7,9 @@ import YoutubeSearch from "./Youtube/YoutubeSearch";
 import Queue from "./Queue";
 import Nav from 'react-bootstrap/Nav';
 import CustomYoutubePlayer from "./Youtube/CustomYoutubePlayer";
+// import {io} from "socket.io-client";
+import {socket} from "./SocketTest";
+
 
 
 export default function HostView( {count, handleClick} ) {
@@ -20,32 +23,46 @@ export default function HostView( {count, handleClick} ) {
 
 
 
-    function testJSON(text) {
-        try {
-            JSON.parse(text);
-            return true;
-        } catch (error) {
-            return false;
-        }
-    }
+    // const socket = io(process.env.REACT_APP_URL_PREFIX);
 
-    const ws = new WebSocket("ws://localhost:8082/");
+    socket.on("update playing track: ", (track) => {
+        setPlayingTrack(track);
+    })
 
-    ws.addEventListener("message", (m) => {
+    // socket.on("message", (m) => {
+    //     if(m.data === "bark"){
+    //         console.log("bark");
+    //     }
+    //
+    //     if(  m.data.includes("update playing track") && testJSON(m.data.substring(m.data.indexOf(":") + 1)) ){
+    //         setPlayingTrack(JSON.parse(   m.data.substring(m.data.indexOf(":") + 1)  ));
+    //     }
+    //
+    //     else{
+    //         console.log("Heard you server!: " + m.data);
+    //         // ws.send("YO");
+    //     }
+    // })
 
-        if(m.data === "bark"){
-            console.log("bark");
-        }
 
-        if(  m.data.includes("update playing track") && testJSON(m.data.substring(m.data.indexOf(":") + 1)) ){
-            setPlayingTrack(JSON.parse(   m.data.substring(m.data.indexOf(":") + 1)  ));
-        }
 
-        else{
-            console.log("Heard you server!: " + m.data);
-            // ws.send("YO");
-        }
-    });
+    // const ws = new WebSocket("ws://localhost:8082/");
+
+    // ws.addEventListener("message", (m) => {
+    //
+    //     if(m.data === "bark"){
+    //         console.log("bark");
+    //     }
+    //
+    //     if(  m.data.includes("update playing track") && testJSON(m.data.substring(m.data.indexOf(":") + 1)) ){
+    //         setPlayingTrack(JSON.parse(   m.data.substring(m.data.indexOf(":") + 1)  ));
+    //     }
+    //
+    //     else{
+    //         console.log("Heard you server!: " + m.data);
+    //         // ws.send("YO");
+    //     }
+    // });
 
 
 
@@ -80,9 +97,17 @@ export default function HostView( {count, handleClick} ) {
                 setRoom(res.data.room);
             });
 
+        console.log("host id: " + socket.id);
+        socket.emit("new host id", socket.id);
+
         console.log("access token: " + spotifyAccessToken);
         // eslint-disable-next-line
     }, []);
+
+    useEffect(() => {
+        console.log("host id: " + socket.id);
+        socket.emit("new host id", socket.id);
+    }, [spotifyAccessToken]);
 
 
     function playNextInQueue() {

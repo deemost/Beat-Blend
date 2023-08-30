@@ -50,19 +50,21 @@ export default function GuestView( {count} ) {
 
     /* Websocket Attempt */
 
-    const ws = new WebSocket("ws://localhost:8082/");
 
-    ws.addEventListener("message", (m) => {
 
-        if(m.data === "bark"){
-            console.log("bark");
-        }
-
-        else{
-            console.log("Heard you server!: " + m.data);
-            // ws.send("YO");
-        }
-    });
+    // const ws = new WebSocket("ws://localhost:8082/");
+    //
+    // ws.addEventListener("message", (m) => {
+    //
+    //     if(m.data === "bark"){
+    //         console.log("bark");
+    //     }
+    //
+    //     else{
+    //         console.log("Heard you server!: " + m.data);
+    //         // ws.send("YO");
+    //     }
+    // });
 
 
 

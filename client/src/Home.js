@@ -8,7 +8,7 @@ export default function Home() {
 
     const [room, setRoom] = useState("")
 
-    const handleSubmit = e => {
+    const handleSubmit = () => {
         // e.preventDefault();
         // e.stopPropagation();
         history("/room/" + room);
@@ -17,25 +17,6 @@ export default function Home() {
     const handleChange = e => {
         setRoom(e.target.value)
     };
-
-
-
-    /* WebSocket Attempt */
-
-    const ws = new WebSocket("ws://localhost:8082");
-
-    ws.addEventListener("open", () => {
-        console.log("We are connected!");
-    });
-
-    ws.addEventListener("message", (m) => {
-
-        // if(JSON.stringify(m))
-        console.log(m.data);
-    });
-
-
-
 
 
     return (

@@ -1,21 +1,10 @@
 const express = require('express');
-const {WebSocketServer} = require("ws");
 const router = express.Router();
-// const wss = new WebSocketServer({path: "../server"});
+
+
 
 let queueResults = [];
 let playingTrack;
-
-
-/* WebSockets Attempt */
-
-const broadcast = (clients, message) => {
-
-    clients.forEach((client) => {
-            client.send(message);
-    });
-};
-
 
 // ------------ queue
 router.post("/playingtrack", function (req, res) {
@@ -25,10 +14,12 @@ router.post("/playingtrack", function (req, res) {
     console.log(playingTrack);
 
 
-    // let trackPackage = ["update playing track: ", playingTrack];
-    // broadcast(req.app.locals.clients, trackPackage);
+    // console.log(req.app.locals.clients);
+    // console.log(req.app.get("hostIds"));
+    // console.log(req.app.get("nadeem"));
 
-    broadcast(req.app.locals.clients, "update playing track: " + JSON.stringify(playingTrack));
+    // broadcast(req.app.get("hostIds"), "update playing track: " + JSON.stringify(playingTrack));
+    req.app.get("socketIoServer").local.emit("update playing track: ", playingTrack);
 
 });
 

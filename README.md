@@ -43,4 +43,5 @@ YOUTUBE_API_KEY=<copy_from_youtube_app>
 
 FINAL_RESPONSE_URI=/host
 ```
-using `heroku config:set VAR=value`
+using `heroku config:set VAR=value` for setting variables above and `git subtree push --prefix server heroku main` to
+push after commiting
