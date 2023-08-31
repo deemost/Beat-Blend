@@ -5,6 +5,7 @@ import SpotifySearch from "./Spotify/SpotifySearch";
 import YoutubeSearch from "./Youtube/YoutubeSearch";
 import Queue from "./Queue";
 import Nav from 'react-bootstrap/Nav';
+import {socket} from "./SocketTest";
 
 
 export default function GuestView( {count} ) {
@@ -15,6 +16,11 @@ export default function GuestView( {count} ) {
     // const [playingTrack, setPlayingTrack] = useState();
     const [queueResults, setQueueResults] = useState([]);
     const [room, setRoom] = useState("");
+
+
+    socket.on("update queue", (queue) => {
+        setQueueResults(queue);
+    });
 
 
     useEffect(() => {

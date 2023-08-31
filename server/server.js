@@ -27,7 +27,9 @@ io.on("connection",(socket)=>{
     console.log("client connected: ",socket.id);
 
     socket.on("new host id", (id) => {
-        hostClientIds.push(id);
+        if(!hostClientIds.includes(id)){
+            hostClientIds.push(id);
+        }
         console.log("host clients: " + hostClientIds);
     });
 

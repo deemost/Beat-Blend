@@ -3,23 +3,9 @@ import "./Host-Background.css";
 import "./Guest-Background.css";
 import HostView from "./HostView";
 import Guest from "./Guest";
-import {useState} from "react";
 
 
 function ViewSelector(whichView) {
-
-    const [count, setCount] = useState(32);
-
-    const handleClick = () => {
-        console.log("parent click");
-        if(count === 32){
-            setCount(999);
-        }
-        else{
-            setCount(32);
-        }
-
-    };
 
     return (
 
@@ -27,11 +13,11 @@ function ViewSelector(whichView) {
             {JSON.stringify(whichView).includes("Host") ? (
 
             <div className="header1">
-                <HostView count={count} handleClick={handleClick}/>
+                <HostView/>
             </div> )
 
                 : (<div className="header2">
-                        <Guest count={count}/>
+                        <Guest/>
                     </div>)
             }
 

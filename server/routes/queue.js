@@ -13,13 +13,7 @@ router.post("/playingtrack", function (req, res) {
     res.json({playingTrack})
     console.log(playingTrack);
 
-
-    // console.log(req.app.locals.clients);
-    // console.log(req.app.get("hostIds"));
-    // console.log(req.app.get("nadeem"));
-
-    // broadcast(req.app.get("hostIds"), "update playing track: " + JSON.stringify(playingTrack));
-    req.app.get("socketIoServer").local.emit("update playing track: ", playingTrack);
+    req.app.get("socketIoServer").local.emit("update playing track", playingTrack);
 
 });
 
@@ -30,7 +24,9 @@ router.get("/playingtrack", function (req, res) {
 router.post("/", function (req, res) {
     console.log("adding to queue: " + JSON.stringify(req.body.track));
     queueResults.push(req.body.track);
-    res.json({queueResults})
+    res.json({queueResults});
+
+    req.app.get("socketIoServer").local.emit("update queue", queueResults);
 });
 
 router.get("/", function (req, res) {
@@ -39,12 +35,16 @@ router.get("/", function (req, res) {
 
 router.delete("/specific", function (req, res) {
     queueResults.splice(req.query.trackIndexInQueue, 1);
-    res.json({queueResults})
+    res.json({queueResults});
+
+    req.app.get("socketIoServer").local.emit("update queue", queueResults);
 });
 
 router.delete("/all", function (req, res) {
     queueResults = [];
-    res.json({queueResults})
+    res.json({queueResults});
+
+    req.app.get("socketIoServer").local.emit("update queue", queueResults);
 });
 
 

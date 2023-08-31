@@ -12,7 +12,7 @@ import {socket} from "./SocketTest";
 
 
 
-export default function HostView( {count, handleClick} ) {
+export default function HostView() {
 
     const [spotifyAccessToken, setSpotifyAccessToken] = useState("");
     const [youtubeAccessToken, setYoutubeAccessToken] = useState("");
@@ -22,47 +22,13 @@ export default function HostView( {count, handleClick} ) {
     const [room, setRoom] = useState("");
 
 
-
-    // const socket = io(process.env.REACT_APP_URL_PREFIX);
-
-    socket.on("update playing track: ", (track) => {
+    socket.on("update playing track", (track) => {
         setPlayingTrack(track);
-    })
+    });
 
-    // socket.on("message", (m) => {
-    //     if(m.data === "bark"){
-    //         console.log("bark");
-    //     }
-    //
-    //     if(  m.data.includes("update playing track") && testJSON(m.data.substring(m.data.indexOf(":") + 1)) ){
-    //         setPlayingTrack(JSON.parse(   m.data.substring(m.data.indexOf(":") + 1)  ));
-    //     }
-    //
-    //     else{
-    //         console.log("Heard you server!: " + m.data);
-    //         // ws.send("YO");
-    //     }
-    // })
-
-
-
-    // const ws = new WebSocket("ws://localhost:8082/");
-
-    // ws.addEventListener("message", (m) => {
-    //
-    //     if(m.data === "bark"){
-    //         console.log("bark");
-    //     }
-    //
-    //     if(  m.data.includes("update playing track") && testJSON(m.data.substring(m.data.indexOf(":") + 1)) ){
-    //         setPlayingTrack(JSON.parse(   m.data.substring(m.data.indexOf(":") + 1)  ));
-    //     }
-    //
-    //     else{
-    //         console.log("Heard you server!: " + m.data);
-    //         // ws.send("YO");
-    //     }
-    // });
+    socket.on("update queue", (queue) => {
+        setQueueResults(queue);
+    });
 
 
 
@@ -107,7 +73,7 @@ export default function HostView( {count, handleClick} ) {
     useEffect(() => {
         console.log("host id: " + socket.id);
         socket.emit("new host id", socket.id);
-    }, [spotifyAccessToken]);
+    }, [spotifyAccessToken, youtubeAccessToken]);
 
 
     function playNextInQueue() {
@@ -147,10 +113,6 @@ export default function HostView( {count, handleClick} ) {
 
         if (str === "Youtube" && !youtubeAccessToken) {
             window.location.replace(process.env.REACT_APP_URL_PREFIX + '/login/youtube');
-        }
-
-        if (str === "TEST") {
-            handleClick();
         }
 
         if (str === "Logout") {
@@ -255,13 +217,6 @@ export default function HostView( {count, handleClick} ) {
                                               className='btn btn-light btn-sm'
                                               style={{color: 'black'}}>Logout</Nav.Link>
                                 </Nav.Item>
-                                <div>&nbsp;</div>
-                                <Nav.Item>
-                                    <Nav.Link onClick={handleButtonsClick("TEST")}
-                                              className='btn btn-danger btn-sm'
-                                              style={{color: 'white'}}>TEST</Nav.Link>
-                                </Nav.Item>
-                                <div>{JSON.stringify(count)}</div>
                             </Nav>
                         </Navbar.Collapse>
                         <div>Room # {room}</div>
