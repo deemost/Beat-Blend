@@ -197,7 +197,8 @@ export default function HostView() {
                                 <Nav.Item>
                                     <Nav.Link onClick={handleButtonsClick("Spotify")}
                                               className='btn btn-success btn-sm'
-                                              style={{color: 'white'}}>Spotify</Nav.Link>
+                                              // style={{color: 'white'}}> <img src="spotifylogo.png"  /> </Nav.Link>
+                                              style={{color: 'white'}}> Spotify </Nav.Link>
                                 </Nav.Item>
                                 <div>&nbsp;</div>
                                 <Nav.Item>
