@@ -17,6 +17,10 @@ https://developer.spotify.com/documentation/web-api
 4. specify redirect URL to be http://localhost:3001/callback/youtube (matches server callback)
 5. record client id and client secret in `/server/.env` file
 
+### Run the App
+1. go into `Beat-Blend/server` directory and run ```npm start```
+2. go into `Beat-Blend/client` directory and run ```npm start```
+
 ### Other Settings
 In `/server/.env` file, specify `FINAL_RESPONSE_URI=http://localhost:3000` as well as all service client ids, secrets, and keys 
 
