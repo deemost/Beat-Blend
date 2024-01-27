@@ -9,18 +9,13 @@ export default function Home() {
     const [room, setRoom] = useState("")
     const [username, setUsername] = useState("")
 
-    const handleSubmitRoom = () => {
-        // e.preventDefault();
-        // e.stopPropagation();
+    const handleSubmit = () => {
+        setUsername(username)
         history("/room/" + room);
     };
 
     const handleChangeRoom = e => {
         setRoom(e.target.value)
-    };
-
-    const handleSubmitUsername = () => {
-        setUsername(username)
     };
 
     const handleChangeUsername = e => {
@@ -43,9 +38,6 @@ export default function Home() {
                                 <Col xs={8} md={8} lg={8}>
                                     <Form.Control type="text" placeholder="Username" onChange={handleChangeUsername} />
                                 </Col>
-                                <Col>
-                                    <Button onClick={handleSubmitUsername}>Go</Button>
-                                </Col>
                             </Form.Group>
                         </Form>
                         <Link to={`host`} className="btn btn-outline-success btn-lg">Enter as a Host</Link>
@@ -55,7 +47,7 @@ export default function Home() {
                                     <Form.Control type="text" placeholder="Room #" onChange={handleChangeRoom} />
                                 </Col>
                                 <Col>
-                                    <Button onClick={handleSubmitRoom}>Go</Button>
+                                    <Button onClick={handleSubmit}>Go</Button>
                                 </Col>
                             </Form.Group>
                         </Form>
