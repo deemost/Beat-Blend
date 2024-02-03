@@ -1,6 +1,29 @@
 ## Local Dev Setup
 Local dev setup requires creating apps for spotify/youtube for the host
 
+### Client
+```
+cd client
+npm install
+```
+
+To start the client:
+```
+npm start
+```
+
+### Server
+Ro get the dependencies:
+```
+cd server
+npm install
+```
+
+To start the server:
+```
+node server.js
+```
+
 ### Setup Spotify App
 1. go to https://developer.spotify.com/dashboard and login
 2. create an app
@@ -22,7 +45,7 @@ https://developer.spotify.com/documentation/web-api
 2. go into `Beat-Blend/client` directory and run ```npm start```
 
 ### Other Settings
-In `/server/.env` file, specify `FINAL_RESPONSE_URI=http://localhost:3000` as well as all service client ids, secrets, and keys 
+In `/server/.env` file, specify `FINAL_RESPONSE_URI=/host` as well as all service client ids, secrets, and keys 
 
 
 ### Heroku
@@ -48,4 +71,4 @@ YOUTUBE_API_KEY=<copy_from_youtube_app>
 FINAL_RESPONSE_URI=/host
 ```
 using `heroku config:set VAR=value` for setting variables above and `git subtree push --prefix server heroku main` to
-push after commiting
+push after committing

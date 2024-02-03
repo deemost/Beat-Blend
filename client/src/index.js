@@ -1,19 +1,13 @@
 import {createRoot} from 'react-dom/client';
 import React from "react"
 import {createBrowserRouter, RouterProvider,} from "react-router-dom";
-import Home from "./Home";
-import {loader as roomLoader} from "./Guest";
-import ViewSelector from "./ViewSelector";
+import Home from "./Home/Home";
+import Room from "./Room/Room";
 
 const router = createBrowserRouter([
     {
         path: "/room/:id",
-        element: <ViewSelector whichView = "Guest"/>,
-        loader: roomLoader,
-    },
-    {
-        path: "/host",
-        element: <ViewSelector whichView = "Host"/>,
+        element: <Room/>,
     },
     {
         path: "/",
@@ -25,10 +19,6 @@ const container = document.getElementById('root');
 const root = createRoot(container);
 root.render(
     // <React.StrictMode>
-        <RouterProvider router={router}/>
+    <RouterProvider router={router}/>
     // </React.StrictMode>
 )
-
-// const container = document.getElementById('root');
-// const root = createRoot(container);
-// root.render(<App />);

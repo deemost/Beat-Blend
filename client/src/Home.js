@@ -7,54 +7,56 @@ export default function Home() {
     let history = useNavigate();
 
     const [room, setRoom] = useState("")
-    const [username, setUsername] = useState("")
+    const [hostName, setHostName] = useState("")
+    const [guestName, setGuestName] = useState("")
 
-    const handleSubmit = () => {
-        setUsername(username)
-        history("/room/" + room);
-    };
+    const handleStartRoom = () => {
+        console.log("inside handleStartRoom")
+    }
 
-    const handleChangeRoom = e => {
-        setRoom(e.target.value)
-    };
-
-    const handleChangeUsername = e => {
-        setUsername(e.target.value)
-    };
+    const handleJoinRoom = () => {
+        console.log("inside handleJoinRoom")
+    }
+    // const handleSubmit = () => {
+    //     // e.preventDefault();
+    //     // e.stopPropagation();
+    //     history("/room/" + room);
+    // };
+    //
+    // const handleChange = e => {
+    //     setRoom(e.target.value)
+    // };
 
 
     return (
-        <div className="d-flex align-items-center justify-content-center">
+        <div>
             <Container>
-                <Row className="text-center">
-                    <Col>
-                        <h1>Beat Blend</h1>
-                    </Col>
+                <Row>
+                    <Col><h1>Beat Blend</h1></Col>
                 </Row>
-                <Row className="justify-content-center mt-lg-5">
-                    <Col className="justify-content-center" xs={12} md={6} lg={4}>
+                <Row>
+                    <Col>
                         <Form>
-                            <Form.Group as={Row}>
-                                <Col xs={8} md={8} lg={8}>
-                                    <Form.Control type="text" placeholder="Username" onChange={handleChangeUsername} />
-                                </Col>
+                            <Form.Group className="mb-3" id="startRoom">
+                                <Form.Control type="text" placeholder="Host Name" id="hostName"/>
+                                <Button className='btn-primary btn-sm' onClick={handleStartRoom}>Start Room</Button>
                             </Form.Group>
                         </Form>
-                        <Link to={`host`} className="btn btn-outline-success btn-lg">Enter as a Host</Link>
+                    </Col>
+                </Row>
+                <div>OR</div>
+                <Row>
+                    <Col>
                         <Form>
-                            <Form.Group as={Row}>
-                                <Col xs={8} md={8} lg={8}>
-                                    <Form.Control type="text" placeholder="Room #" onChange={handleChangeRoom} />
-                                </Col>
-                                <Col>
-                                    <Button onClick={handleSubmit}>Go</Button>
-                                </Col>
+                            <Form.Group className="mb-3" id="joinRoom">
+                                <Form.Control type="text" placeholder="Guest Name" id="guestName"/>
+                                <Form.Control type="text" placeholder="Room #" id="roomNumber"/>
+                                <Button className='btn-success btn-sm' onClick={handleJoinRoom}>Join Room</Button>
                             </Form.Group>
                         </Form>
                     </Col>
                 </Row>
             </Container>
         </div>
-
     )
 }

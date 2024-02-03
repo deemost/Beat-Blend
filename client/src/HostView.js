@@ -8,7 +8,7 @@ import Queue from "./Queue";
 import Nav from 'react-bootstrap/Nav';
 import CustomYoutubePlayer from "./Youtube/CustomYoutubePlayer";
 // import {io} from "socket.io-client";
-import {socket} from "./SocketTest";
+// import {socket} from "./SocketTest";
 
 
 
@@ -22,13 +22,13 @@ export default function HostView() {
     const [room, setRoom] = useState("");
 
 
-    socket.on("update playing track", (track) => {
-        setPlayingTrack(track);
-    });
-
-    socket.on("update queue", (queue) => {
-        setQueueResults(queue);
-    });
+    // socket.on("update playing track", (track) => {
+    //     setPlayingTrack(track);
+    // });
+    //
+    // socket.on("update queue", (queue) => {
+    //     setQueueResults(queue);
+    // });
 
 
 
@@ -63,16 +63,16 @@ export default function HostView() {
                 setRoom(res.data.room);
             });
 
-        console.log("host id: " + socket.id);
-        socket.emit("new host id", socket.id);
+        // console.log("host id: " + socket.id);
+        // socket.emit("new host id", socket.id);
 
         console.log("access token: " + spotifyAccessToken);
         // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
-        console.log("host id: " + socket.id);
-        socket.emit("new host id", socket.id);
+        // console.log("host id: " + socket.id);
+        // socket.emit("new host id", socket.id);
     }, [spotifyAccessToken, youtubeAccessToken]);
 
 
@@ -107,7 +107,9 @@ export default function HostView() {
     const handleButtonsClick = (str) => () => {
         setWhichService(str);
 
+        console.log("ddd spotifyAccessToken=" + spotifyAccessToken)
         if (str === "Spotify" && !spotifyAccessToken) {
+            console.log("DDDDDDDD")
             window.location.replace(process.env.REACT_APP_URL_PREFIX + '/login/spotify');
         }
 
