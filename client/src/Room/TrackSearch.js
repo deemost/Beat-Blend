@@ -21,12 +21,10 @@ const TrackSearch = ({user, sendMessage}) => {
             .then((res) => {
                 console.log("track added!");
                 sendMessage({
-                    event: "track_added",
-                    data: {
-                        room: user.room_id,
-                        track: filteredTracks[0],
-                        user: user.name,
-                    },
+                    event_type: "track_added",
+                    timestamp: Date.now(),
+                    room_id: user.room_id,
+                    user_name: user.name
                 })
             });
     };
@@ -45,6 +43,7 @@ const TrackSearch = ({user, sendMessage}) => {
 
     return (
         <>
+            <h3>Search</h3>
             <form onSubmit={handleSubmit}>
                 <label>
                     <input type="text" value={query} onChange={handleChange}/>

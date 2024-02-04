@@ -1,7 +1,7 @@
 const Queue = ({queue}) => {
-    // console.log("before queue useEffect, queue=" + JSON.stringify(queue));
     return (
         <>
+            <h3>Playlist</h3>
             <ul>
                 {queue && queue.tracks.map((queueTrack) => (
                     <li key={queueTrack.track.uri}>

@@ -1,6 +1,5 @@
 import CreateRoom from "./CreateRoom"
 import JoinRoom from "./JoinRoom"
-import {WSDemo} from "./WSDemo";
 
 const Home = () => {
     return (
@@ -9,7 +8,6 @@ const Home = () => {
             <br/>
             <div>-- OR --</div>
             <JoinRoom/>
-            <WSDemo/>
         </div>
     );
 };

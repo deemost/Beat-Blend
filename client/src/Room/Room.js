@@ -4,37 +4,41 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import TrackSearch from "./TrackSearch";
 import Queue from "./Queue";
-import useWebSocket, {ReadyState} from "react-use-websocket"
+import useWebSocket from "react-use-websocket"
+import UserInfo from "./UserInfo";
+import RoomMessage from "./RoomMessage";
 
 const Room = () => {
-    const WS_URL = "ws://localhost:3001/ws/events"
-    const {sendJsonMessage, lastJsonMessage, readyState} = useWebSocket(
-        WS_URL,
-        {
-            // share=true lets other components use the same ws (if same url)
-            share: true,
-            shouldReconnect: () => true,
-        },
-    )
-    const [user, setUser] = useState("")
+    const [socketUrl, setSocketUrl] = useState('ws://localhost:3001/ws/events');
+    const {
+        sendJsonMessage,
+        lastJsonMessage,
+        readyState
+    } = useWebSocket(socketUrl, {
+        // share=true lets other components use the same ws (if same url)
+        share: true,
+        shouldReconnect: () => true,
+    });
+
+    const [user, setUser] = useState(null)
     const [queue, setQueue] = useState(null)
 
-    // Run when the connection state (readyState) changes
-    useEffect(() => {
-        console.log("------ Connection state changed")
-        if (readyState === ReadyState.OPEN) {
-            sendJsonMessage({
-                event: "subscribe",
-                data: {
-                    room: "todo: room-id",
-                },
-            })
-        }
-    }, [readyState])
 
     // Run when a new WebSocket message is received (lastJsonMessage)
     useEffect(() => {
-        console.log("~~~~~~~ received: " + JSON.stringify(lastJsonMessage))
+        if (user !== null && lastJsonMessage !== null && lastJsonMessage.room_id === user.room_id) {
+            console.log("~~~~~~~ room: " + user.room_id +
+                " received event_type: " + lastJsonMessage.event_type +
+                ", intended for room: " + lastJsonMessage.room_id +
+                ", event: " + JSON.stringify(lastJsonMessage))
+            axios.get("http://localhost:3001/rooms/" + user.room_id + "/queue")
+                .then((res) => {
+                    // console.log("inside room, got queue=" + JSON.stringify(res.data));
+                    setQueue(res.data);
+                });
+        } else {
+            console.log("~~~~~~~ ignoring event: " + JSON.stringify(lastJsonMessage))
+        }
     }, [lastJsonMessage])
 
     useEffect(() => {
@@ -57,11 +61,11 @@ const Room = () => {
             const user_id = pieces[1];
             axios.get("http://localhost:3001/users/" + user_id)
                 .then((res) => {
-                    // console.log("inside room, got user: " + JSON.stringify(res.data));
+                    console.log("inside room, got user: " + JSON.stringify(res.data));
                     setUser(res.data)
                     axios.get("http://localhost:3001/rooms/" + res.data.room_id + "/queue")
                         .then((res) => {
-                            // console.log("inside room, got queue=" + JSON.stringify(res.data));
+                            console.log("inside room, got queue=" + JSON.stringify(res.data));
                             setQueue(res.data)
                         });
                 });
@@ -70,16 +74,28 @@ const Room = () => {
 
     return (
         <>
-            <div>MESSAGE: {lastJsonMessage && JSON.stringify(lastJsonMessage)}</div>
-            <table>
+            <table border={1}>
                 <tbody>
                 <tr>
                     <td style={{width: '50%'}}>
-                        <RoomInfo user={user}/>
-                        <TrackSearch user={user} sendMessage={sendJsonMessage}/>
+                        <h2>Beat Blend</h2>
                     </td>
                     <td style={{width: '50%'}}>
+                        <UserInfo user={user}/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colSpan={2}>
+                        Messages: <RoomMessage user={user} lastMessage={lastJsonMessage}/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style={{width: '50%', verticalAlign: 'top'}}>
+                        <RoomInfo user={user}/>
                         <Queue queue={queue}/>
+                    </td>
+                    <td style={{width: '50%', verticalAlign: 'top'}}>
+                        <TrackSearch user={user} sendMessage={sendJsonMessage}/>
                     </td>
                 </tr>
                 </tbody>
