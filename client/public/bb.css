@@ -1,0 +1,21 @@
+div.scroll {
+    margin: 4px 4px;
+    padding: 4px;
+    height: 250px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+/*img {*/
+/*    float: left;*/
+/*}*/
+
+/*ul {*/
+/*    list-style: outside disc;*/
+/*    margin-left: 1em;*/
+/*}*/
+/*ul li {*/
+/*    position: relative;*/
+/*    left: 1em;*/
+/*    padding-right: 1em;*/
+/*}*/

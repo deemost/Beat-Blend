@@ -8,6 +8,13 @@ const RoomMessage = ({user, lastMessage}) => {
                 </>
             );
         }
+        if (lastMessage.event_type === 'track_added' && lastMessage.user_name !== null) {
+            return (
+                <>
+                    <span>{lastMessage.user_name} added "{lastMessage.track_name}"</span>
+                </>
+            );
+        }
     }
 };
 

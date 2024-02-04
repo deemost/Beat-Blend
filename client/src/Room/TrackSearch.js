@@ -24,7 +24,8 @@ const TrackSearch = ({user, sendMessage}) => {
                     event_type: "track_added",
                     timestamp: Date.now(),
                     room_id: user.room_id,
-                    user_name: user.name
+                    user_name: user.name,
+                    track_name: filteredTracks[0].title
                 })
             });
     };
@@ -51,15 +52,16 @@ const TrackSearch = ({user, sendMessage}) => {
                 <button>Search</button>
             </form>
 
-            <ul>
-                {results && results.map((track) => (
-                    <li key={track.uri}>
-                        {track.title} ({track.artist})
-                        <img src={track.albumUrl} height="40" alt={track.title}/>
-                        <a id={track.uri} onClick={handleAddToQueue}>add to queue</a>
-                    </li>
-                ))}
-            </ul>
+            <div className={'scroll'}>
+                <ul>
+                    {results && results.map((track) => (
+                        <li key={track.uri}>
+                            <img src={track.albumUrl} height="40" alt={track.title}/>
+                            {track.title} ({track.artist}) [<a id={track.uri} onClick={handleAddToQueue}>add to queue</a>]
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </>
     );
 };

@@ -77,10 +77,11 @@ const Room = () => {
             <table border={1}>
                 <tbody>
                 <tr>
-                    <td style={{width: '50%'}}>
+                    <td style={{width: '50%', verticalAlign: 'top'}}>
                         <h2>Beat Blend</h2>
                     </td>
-                    <td style={{width: '50%'}}>
+                    <td style={{width: '50%', verticalAlign: 'top'}}>
+                        <RoomInfo user={user}/>
                         <UserInfo user={user}/>
                     </td>
                 </tr>
@@ -91,7 +92,6 @@ const Room = () => {
                 </tr>
                 <tr>
                     <td style={{width: '50%', verticalAlign: 'top'}}>
-                        <RoomInfo user={user}/>
                         <Queue queue={queue}/>
                     </td>
                     <td style={{width: '50%', verticalAlign: 'top'}}>

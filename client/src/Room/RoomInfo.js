@@ -5,7 +5,7 @@ const RoomInfo = ({user}) => {
         return (
             <div>
                 <h3>Room: {user.room_id}</h3>
-                <div>Address: http://localhost:3000/room/{user.room_id} (add copy button)</div>
+                {/*<div>Address: http://localhost:3000/room/{user.room_id} (add copy button)</div>*/}
             </div>
         );
     }
