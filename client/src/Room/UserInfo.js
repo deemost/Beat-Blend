@@ -1,3 +1,5 @@
+import React from "react"
+
 const UserInfo = ({user}) => {
 
     if (user !== null) {

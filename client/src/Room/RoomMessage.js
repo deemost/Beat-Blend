@@ -1,3 +1,5 @@
+import React from "react"
+
 const RoomMessage = ({user, lastMessage}) => {
 
     if (user !== null && lastMessage !== null && lastMessage.room_id === user.room_id) {

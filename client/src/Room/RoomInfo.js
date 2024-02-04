@@ -1,3 +1,5 @@
+import React from "react"
+
 const RoomInfo = ({user}) => {
     // console.log("in roominfo, user=" + JSON.stringify(user));
 

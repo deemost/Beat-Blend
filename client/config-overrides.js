@@ -12,7 +12,7 @@ module.exports = function override(config) {
         "path": require.resolve("path-browserify"),
         "url": require.resolve("url")
     })
-    config.resolve.fallback = fallback;
+    // config.resolve.fallback = fallback;
     config.plugins = (config.plugins || []).concat([
         new webpack.ProvidePlugin({
             process: 'process/browser',

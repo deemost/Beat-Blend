@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import axios from "axios";
 
 const TrackSearch = ({user, sendMessage}) => {
@@ -57,7 +57,8 @@ const TrackSearch = ({user, sendMessage}) => {
                     {results && results.map((track) => (
                         <li key={track.uri}>
                             <img src={track.albumUrl} height="40" alt={track.title}/>
-                            {track.title} ({track.artist}) [<a id={track.uri} onClick={handleAddToQueue}>add to queue</a>]
+                            {track.title} ({track.artist})
+                            <button id={track.uri} onClick={handleAddToQueue}>add to queue</button>
                         </li>
                     ))}
                 </ul>

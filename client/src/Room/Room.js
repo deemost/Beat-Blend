@@ -1,5 +1,5 @@
+import React, {useEffect, useState} from "react"
 import RoomInfo from "./RoomInfo";
-import {useEffect, useState} from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import TrackSearch from "./TrackSearch";
@@ -9,11 +9,11 @@ import UserInfo from "./UserInfo";
 import RoomMessage from "./RoomMessage";
 
 const Room = () => {
-    const [socketUrl, setSocketUrl] = useState('ws://localhost:3001/ws/events');
+    const [socketUrl] = useState('ws://localhost:3001/ws/events');
     const {
         sendJsonMessage,
         lastJsonMessage,
-        readyState
+        // readyState
     } = useWebSocket(socketUrl, {
         // share=true lets other components use the same ws (if same url)
         share: true,
@@ -39,7 +39,7 @@ const Room = () => {
         } else {
             console.log("~~~~~~~ ignoring event: " + JSON.stringify(lastJsonMessage))
         }
-    }, [lastJsonMessage])
+    }, [user, lastJsonMessage])
 
     useEffect(() => {
         const host_cookie = Cookies.get("bb-host");
@@ -57,7 +57,7 @@ const Room = () => {
         }
         if (user_cookie != null) {
             const pieces = user_cookie.split(":");
-            const room_id = pieces[0];
+            // const room_id = pieces[0];
             const user_id = pieces[1];
             axios.get("http://localhost:3001/users/" + user_id)
                 .then((res) => {
