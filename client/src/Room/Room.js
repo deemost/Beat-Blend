@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react"
-import RoomInfo from "./RoomInfo";
 import Cookies from "js-cookie";
 import axios from "axios";
 import TrackSearch from "./TrackSearch";
 import Queue from "./Queue";
 import useWebSocket from "react-use-websocket"
-import UserInfo from "./UserInfo";
 import RoomMessage from "./RoomMessage";
+import Container from "react-bootstrap/Container";
+import {Col, Row} from "react-bootstrap";
+import NavInfo from "./NavInfo";
 
 const Room = () => {
     const [socketUrl] = useState('ws://localhost:3001/ws/events');
@@ -73,34 +74,22 @@ const Room = () => {
     }, []);
 
     return (
-        <>
-            <table border={1}>
-                <tbody>
-                <tr>
-                    <td style={{width: '50%', verticalAlign: 'top'}}>
-                        <h2>Beat Blend</h2>
-                    </td>
-                    <td style={{width: '50%', verticalAlign: 'top'}}>
-                        <RoomInfo user={user}/>
-                        <UserInfo user={user}/>
-                    </td>
-                </tr>
-                <tr>
-                    <td colSpan={2}>
-                        Messages: <RoomMessage user={user} lastMessage={lastJsonMessage}/>
-                    </td>
-                </tr>
-                <tr>
-                    <td style={{width: '50%', verticalAlign: 'top'}}>
-                        <Queue queue={queue}/>
-                    </td>
-                    <td style={{width: '50%', verticalAlign: 'top'}}>
-                        <TrackSearch user={user} sendMessage={sendJsonMessage}/>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </>
+        <Container fluid>
+            <NavInfo user={user}/>
+            <Row>
+                <Col>
+                    Messages: <RoomMessage user={user} lastMessage={lastJsonMessage}/>
+                </Col>
+            </Row>
+            <Row>
+                <Col sm={7}>
+                    <Queue queue={queue}/>
+                </Col>
+                <Col sm={5}>
+                    <TrackSearch user={user} sendMessage={sendJsonMessage}/>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 export default Room;
