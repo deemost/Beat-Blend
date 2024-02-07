@@ -16,7 +16,7 @@ const Queue = ({queue}) => {
                         <Card.Header style={{backgroundColor: "white", borderWidth: 0}}>
                             <Card.Title className="small">{queueTrack.track.title}</Card.Title>
                             <Card.Subtitle
-                                className="mb-2 small text-muted">by {queueTrack.track.artist}</Card.Subtitle>
+                                className="mb-2 small text-muted">{queueTrack.track.artist}</Card.Subtitle>
                             <Card.Text className="small">Added by {queueTrack.user.name}</Card.Text>
                         </Card.Header>
                     </Card>

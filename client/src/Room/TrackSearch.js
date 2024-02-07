@@ -8,7 +8,7 @@ import {InputGroup} from "react-bootstrap";
 
 const TrackSearch = ({user, sendMessage}) => {
     const [query, setQuery] = useState("")
-    const [results, setResults] = useState("")
+    const [results, setResults] = useState([])
 
     const handleChange = (e) => {
         setQuery(e.target.value);
@@ -50,30 +50,37 @@ const TrackSearch = ({user, sendMessage}) => {
             });
     };
 
+    const handleClearSearch = (e) => {
+        e.preventDefault();
+        setResults([]);
+        setQuery("");
+    }
+
     return (
         <>
             <Form onSubmit={handleSubmit}>
-                <InputGroup className="mb-3">
+                <InputGroup className="mb-3" size="sm">
                     <Form.Control type="text"
-                                  placeholder="Search for track or artist"
+                                  placeholder="Track or artist"
                                   value={query}
                                   onChange={handleChange}/>
                     <Button variant="primary" type="submit">Search</Button>
+                    <Button variant="danger" onClick={handleClearSearch}>Clear</Button>
                 </InputGroup>
             </Form>
 
             <Stack direction="vertical" gap={1} className="justify-content-center">
                 {results && results.map((track) => (
-                    <Card key={track.uri} className="flex-row flex-wrap" style={{borderWidth: 1}}>
+                    <Card key={track.uri} className="flex-row flex-wrap" style={{borderWidth: 1, fontSize: '0.85em'}}>
                         <Card.Header style={{borderWidth: 0}}>
                             <Card.Img variant="top"
                                       src={track.albumUrl}
-                                      style={{height: "64px", width: "64px", cursor: "pointer"}}/>
+                                      style={{height: "48px", width: "48px", cursor: "pointer"}}/>
                         </Card.Header>
                         <Card.Header style={{backgroundColor: "white", borderWidth: 0}}>
                             <Card.Title className="small">{track.title}</Card.Title>
                             <Card.Subtitle
-                                className="mb-2 small text-muted">by {track.artist}</Card.Subtitle>
+                                className="mb-2 small text-muted">{track.artist}</Card.Subtitle>
                             <Button variant="success" size="sm" id={track.uri} onClick={handleAddToQueue}>
                                 Add to Playlist
                             </Button>
@@ -81,18 +88,6 @@ const TrackSearch = ({user, sendMessage}) => {
                     </Card>
                 ))}
             </Stack>
-
-            {/*<div className={'scroll'}>*/}
-            {/*    <ul>*/}
-            {/*        {results && results.map((track) => (*/}
-            {/*            <li key={track.uri}>*/}
-            {/*                <img src={track.albumUrl} height="40" alt={track.title}/>*/}
-            {/*                {track.title} ({track.artist})*/}
-            {/*                <button id={track.uri} onClick={handleAddToQueue}>add to queue</button>*/}
-            {/*            </li>*/}
-            {/*        ))}*/}
-            {/*    </ul>*/}
-            {/*</div>*/}
         </>
     );
 };
