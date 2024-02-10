@@ -1,74 +1,70 @@
-## Local Dev Setup
-Local dev setup requires creating apps for spotify/youtube for the host
+# Getting Started with Create React App
 
-### Client
-```
-cd client
-npm install
-```
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-To start the client:
-```
-npm start
-```
+## Available Scripts
 
-### Server
-Ro get the dependencies:
-```
-cd server
-npm install
-```
+In the project directory, you can run:
 
-To start the server:
-```
-node server.js
-```
+### `npm start`
 
-### Setup Spotify App
-1. go to https://developer.spotify.com/dashboard and login
-2. create an app
-3. specify redirect URL to be http://localhost:3001/callback/spotify (matches server callback)
-4. record client id and client secret in `/server/.env` file
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-### Spotify Web Api
-https://developer.spotify.com/documentation/web-api
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-### Setup YouTube App
-1. go to https://console.cloud.google.com/apis/dashboard
-2. create a new project
-3. create new credentials of type: OAuth 2.0 Client IDs
-4. specify redirect URL to be http://localhost:3001/callback/youtube (matches server callback)
-5. record client id and client secret in `/server/.env` file
+### `npm test`
 
-### Run the App
-1. go into `Beat-Blend/server` directory and run ```npm start```
-2. go into `Beat-Blend/client` directory and run ```npm start```
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### Other Settings
-In `/server/.env` file, specify `FINAL_RESPONSE_URI=/host` as well as all service client ids, secrets, and keys 
+### `npm run build`
 
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-### Heroku
-1. `heroku login`
-2. `cd Beat-Blend`
-3. `heroku git:remote -a beatblend` (this is a one-time command to create the Heroku remote)
-4. `git subtree push --prefix server heroku main`
-5. One time setup (or if new variable are added or updated): populate the env variables:
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-```
-BACKEND_URL_PREFIX=https://beatblend-898262b11887.com
-FRONTEND_URL_PREFIX=https://beat-blend.netlify.app
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-SPOTIFY_REDIRECT_URI=/callback/spotify
-SPOTIFY_CLIENT_ID=<copy_from_spotify_app>
-SPOTIFY_CLIENT_SECRET=<copy_from_spotify_app>
+### `npm run eject`
 
-YOUTUBE_REDIRECT_URI=/callback/youtube
-YOUTUBE_CLIENT_ID=<copy_from_youtube_app>
-YOUTUBE_CLIENT_SECRET=<copy_from_youtube_app>
-YOUTUBE_API_KEY=<copy_from_youtube_app>
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-FINAL_RESPONSE_URI=/host
-```
-using `heroku config:set VAR=value` for setting variables above and `git subtree push --prefix server heroku main` to
-push after committing
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
