@@ -25,7 +25,7 @@ const Queue = ({queue, clearQueue, deleteFromQueue, user}) => {
                         </Card.Header>
                         <Card.Header style={{backgroundColor: "white", borderWidth: 0}}>
                             <Button variant="danger"
-                                    disabled={queueTrack.user.id === user.id}
+                                    disabled={user.role !== "host" && queueTrack.user.id !== user.id}
                                     onClick={() => deleteFromQueue(queueTrack)}
                                     size="sm">X</Button>
                         </Card.Header>
