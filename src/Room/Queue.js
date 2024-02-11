@@ -3,7 +3,7 @@ import Stack from "react-bootstrap/Stack";
 import Card from "react-bootstrap/Card";
 import {Button} from "react-bootstrap";
 
-const Queue = ({queue, clearQueue, deleteFromQueue}) => {
+const Queue = ({queue, clearQueue, deleteFromQueue, user}) => {
 
     if (queue !== null) {
         return (
@@ -25,6 +25,7 @@ const Queue = ({queue, clearQueue, deleteFromQueue}) => {
                         </Card.Header>
                         <Card.Header style={{backgroundColor: "white", borderWidth: 0}}>
                             <Button variant="danger"
+                                    disabled={queueTrack.user.id === user.id}
                                     onClick={() => deleteFromQueue(queueTrack)}
                                     size="sm">X</Button>
                         </Card.Header>

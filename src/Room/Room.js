@@ -89,7 +89,7 @@ const Room = () => {
 
     function deleteFromQueue(queueTrack) {
         console.log("========== " + JSON.stringify(queueTrack));
-        console.log("========== " + queueTrack.uuid);
+        console.log("========== " + queueTrack.user.role);
         axios.delete("http://localhost:3001/rooms/" + user.room_id + "/queue/delete/" + queueTrack.uuid)
             .then((res) => {
                 console.log("track removed!");
@@ -113,7 +113,7 @@ const Room = () => {
             </Row>
             <Row>
                 <Col sm={7}>
-                    <Queue queue={queue} clearQueue={clearQueue} deleteFromQueue={deleteFromQueue}/>
+                    <Queue queue={queue} clearQueue={clearQueue} deleteFromQueue={deleteFromQueue} user={user}/>
                 </Col>
                 <Col sm={5}>
                     <TrackSearch user={user} sendMessage={sendJsonMessage}/>
