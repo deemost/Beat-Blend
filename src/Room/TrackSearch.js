@@ -17,6 +17,12 @@ const TrackSearch = ({user, sendMessage}) => {
         }
     };
 
+    function uuid() {
+        return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
+    }
+
     const handleAddToQueue = (e) => {
         e.preventDefault();
         // console.log("adding track: " + e.target.id + " to queue for room: " + user.room_id)
@@ -24,7 +30,7 @@ const TrackSearch = ({user, sendMessage}) => {
             return track.uri === e.target.id;
         });
         axios.post("http://localhost:3001/rooms/" + user.room_id + "/queue/add",
-            {"track": filteredTracks[0], "user": user},
+            {"track": filteredTracks[0], "user": user, "votes": 0, "timestamp": Date.now(), "uuid": uuid()},
             {headers: {'Content-Type': 'application/json'}})
             .then((res) => {
                 console.log("track added!");

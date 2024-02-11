@@ -24,14 +24,13 @@ const Room = () => {
     const [user, setUser] = useState(null)
     const [queue, setQueue] = useState(null)
 
-
     // Run when a new WebSocket message is received (lastJsonMessage)
     useEffect(() => {
         if (user !== null && lastJsonMessage !== null && lastJsonMessage.room_id === user.room_id) {
             console.log("~~~~~~~ room: " + user.room_id +
-                " received event_type: " + lastJsonMessage.event_type +
-                ", intended for room: " + lastJsonMessage.room_id +
-                ", event: " + JSON.stringify(lastJsonMessage))
+                        " received event_type: " + lastJsonMessage.event_type +
+                        ", intended for room: " + lastJsonMessage.room_id +
+                        ", event: " + JSON.stringify(lastJsonMessage))
             axios.get("http://localhost:3001/rooms/" + user.room_id + "/queue")
                 .then((res) => {
                     // console.log("inside room, got queue=" + JSON.stringify(res.data));
@@ -73,6 +72,37 @@ const Room = () => {
         }
     }, []);
 
+    function clearQueue() {
+        console.log("clearQueue");
+        axios.delete("http://localhost:3001/rooms/" + queue.room_id + "/queue")
+            .then((res) => {
+                // console.log("inside room, got queue=" + JSON.stringify(res.data));
+                setQueue(res.data);
+                sendJsonMessage({
+                                    event_type: "queue_cleared",
+                                    timestamp: Date.now(),
+                                    room_id: user.room_id,
+                                    user_name: user.name,
+                                })
+            });
+    }
+
+    function deleteFromQueue(queueTrack) {
+        console.log("========== " + JSON.stringify(queueTrack));
+        console.log("========== " + queueTrack.uuid);
+        axios.delete("http://localhost:3001/rooms/" + user.room_id + "/queue/delete/" + queueTrack.uuid)
+            .then((res) => {
+                console.log("track removed!");
+                sendJsonMessage({
+                                    event_type: "track_removed",
+                                    timestamp: Date.now(),
+                                    room_id: user.room_id,
+                                    user_name: user.name,
+                                    track_name: queueTrack.title
+                                })
+            });
+    }
+
     return (
         <Container fluid>
             <NavInfo user={user}/>
@@ -83,7 +113,7 @@ const Room = () => {
             </Row>
             <Row>
                 <Col sm={7}>
-                    <Queue queue={queue}/>
+                    <Queue queue={queue} clearQueue={clearQueue} deleteFromQueue={deleteFromQueue}/>
                 </Col>
                 <Col sm={5}>
                     <TrackSearch user={user} sendMessage={sendJsonMessage}/>
