@@ -8,12 +8,12 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 
 const router = createBrowserRouter([
     {
-        path: "/room/:id",
-        element: <Room/>,
-    },
-    {
         path: "/",
         element: <Home/>,
+    },
+    {
+        path: "/room/:id",
+        element: <Room/>,
     },
 ]);
 

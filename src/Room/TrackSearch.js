@@ -6,7 +6,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import {InputGroup} from "react-bootstrap";
 
-const TrackSearch = ({user, sendMessage}) => {
+const TrackSearch = ({user, sendJsonMessage}) => {
     const [query, setQuery] = useState("")
     const [results, setResults] = useState([])
 
@@ -28,16 +28,16 @@ const TrackSearch = ({user, sendMessage}) => {
             {headers: {'Content-Type': 'application/json'}})
             .then((res) => {
                 console.log("track added!");
-                sendMessage({
+                sendJsonMessage({
                     event_type: "track_added",
                     timestamp: Date.now(),
                     room_id: user.room_id,
                     user_name: user.name,
                     track_name: filteredTracks[0].title
-                })
+                });
+                filteredTracks[0].added = true;
             });
     };
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -81,9 +81,16 @@ const TrackSearch = ({user, sendMessage}) => {
                             <Card.Title className="small">{track.title}</Card.Title>
                             <Card.Subtitle
                                 className="mb-2 small text-muted">{track.artist}</Card.Subtitle>
-                            <Button variant="success" size="sm" id={track.uri} onClick={handleAddToQueue}>
-                                Add to Playlist
-                            </Button>
+                            {!track.added &&
+                                <Button variant="success" size="sm" id={track.uri} onClick={handleAddToQueue}>
+                                    Add to Playlist
+                                </Button>
+                            }
+                            {track.added &&
+                                <Button variant="outline-secondary" size="sm" id={track.uri}>
+                                    Added to Playlist
+                                </Button>
+                            }
                         </Card.Header>
                     </Card>
                 ))}

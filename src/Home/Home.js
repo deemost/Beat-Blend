@@ -9,7 +9,7 @@ import JoinRoom from "./JoinRoom"
 const Home = () => {
     return (
         <Container fluid>
-            <Stack fluid direction="vertical" gap={1} className="justify-content-center align-items-center vh-10">
+            <Stack direction="vertical" gap={1} className="justify-content-center align-items-center vh-10">
                 <Image src="bb.png" fluid width={'150px'} className={'p-2'}/>
                 <CreateRoom/>
                 <div className="p-2">

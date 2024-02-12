@@ -8,6 +8,7 @@ import RoomMessage from "./RoomMessage";
 import Container from "react-bootstrap/Container";
 import {Col, Row} from "react-bootstrap";
 import NavInfo from "./NavInfo";
+import Nav from "react-bootstrap/Nav";
 
 const Room = () => {
     const [socketUrl] = useState('ws://localhost:3001/ws/events');
@@ -23,7 +24,7 @@ const Room = () => {
 
     const [user, setUser] = useState(null)
     const [queue, setQueue] = useState(null)
-
+    const [showSearch, setShowSearch] = useState(false)
 
     // Run when a new WebSocket message is received (lastJsonMessage)
     useEffect(() => {
@@ -73,23 +74,53 @@ const Room = () => {
         }
     }, []);
 
+    const handleShowSearch = (e) => {
+        e.preventDefault();
+        setShowSearch(true)
+    };
+
+    const handleHideSearch = (e) => {
+        e.preventDefault();
+        setShowSearch(false)
+    };
+
     return (
-        <Container fluid>
-            <NavInfo user={user}/>
-            <Row>
-                <Col>
-                    Messages: <RoomMessage user={user} lastMessage={lastJsonMessage}/>
-                </Col>
-            </Row>
-            <Row>
-                <Col sm={7}>
-                    <Queue queue={queue}/>
-                </Col>
-                <Col sm={5}>
-                    <TrackSearch user={user} sendMessage={sendJsonMessage}/>
-                </Col>
-            </Row>
-        </Container>
+        <>
+            <Container fluid>
+                <NavInfo user={user}/>
+                <Row>
+                    <Col>
+                        Messages: <RoomMessage user={user} lastJsonMessage={lastJsonMessage}/>
+                    </Col>
+                </Row>
+                {showSearch &&
+                    <Row>
+                        <Col>
+                            <TrackSearch user={user} sendJsonMessage={sendJsonMessage}/>
+                        </Col>
+                    </Row>
+                }
+                {!showSearch &&
+                    <Row>
+                        <Col>
+                            <Queue queue={queue}/>
+                        </Col>
+                    </Row>
+                }
+                <Nav fill variant="underline" defaultActiveKey="linkPlaylist" className="fixed-bottom footer">
+                    <Nav.Item>
+                        <Nav.Link eventKey="linkPlaylist" onClick={handleHideSearch}>
+                            <i className="bi bi-music-note-list"></i> Playlist
+                        </Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link eventKey="linkSearch" onClick={handleShowSearch}>
+                            <i className="bi bi-search"></i> Search
+                        </Nav.Link>
+                    </Nav.Item>
+                </Nav>
+            </Container>
+        </>
     );
 };
 export default Room;

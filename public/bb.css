@@ -1,21 +1,21 @@
-div.scroll {
-    margin: 4px 4px;
-    padding: 4px;
-    height: 250px;
-    overflow-x: hidden;
-    overflow-y: scroll;
+body {
+    padding-bottom: 44px;
+    padding-top: 100px;
+    background-color: #EAFFD0 !important;
 }
 
-/*img {*/
-/*    float: left;*/
-/*}*/
+.header {
+    background-color: #F38181;
+}
 
-/*ul {*/
-/*    list-style: outside disc;*/
-/*    margin-left: 1em;*/
-/*}*/
-/*ul li {*/
-/*    position: relative;*/
-/*    left: 1em;*/
-/*    padding-right: 1em;*/
-/*}*/
+.footer {
+    background-color: #95E1D3;
+}
+
+.nav-link {
+    color: #000000 !important;
+}
+
+.navbar-text {
+    color: #ffffff !important;
+}
